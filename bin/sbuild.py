@@ -41,7 +41,7 @@ def expand_includes(raw_paths):
 # Build project
 def build(new_version):
     config = load_project_config()
-    
+    name = config["name"]
     buildpath = config["buildpath"]
     src = config["srcpath"]
     build_type = config["type"]
@@ -52,7 +52,7 @@ def build(new_version):
     Path(buildpath).parent.mkdir(parents=True, exist_ok=True)
     
     # Base compile command
-    output_name = f"{buildpath}-{version}"
+    output_name = f"{str(os.path.join(buildpath,name))}-{version}"
     command = f"g++ -o {output_name} {src}"
     
     # Add type-specific flags

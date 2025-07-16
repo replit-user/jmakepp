@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <regex>
 
-#include "include/nlohmann/json.hpp" // JSON library
+#include "../include/nlohmann/json.hpp" // JSON library
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -59,17 +59,17 @@ std::vector<std::string> expand_includes(const std::vector<std::string>& raw) {
 // Build project
 void build(std::string new_version) {
     json config = load_project_config();
-
+    std::string name = config["name"];
     std::string buildpath = config["buildpath"];
     std::string src = config["srcpath"];
     std::string type = config["type"];
     std::vector<std::string> includepaths = config.value("includepaths", std::vector<std::string>{"./include/*"});
     std::string version = config["version"];
 
-    fs::create_directories(fs::path(buildpath).parent_path());
+    fs::create_directories(fs::path(buildpath));
 
     // Build base command
-    std::string command = "g++ -o " + buildpath + "-" + version + " " + src;
+    std::string command = "g++ -o " + buildpath + name + "-" + version + " " + src;
     
     // Add type flags
     if (type == "elf") {
@@ -109,11 +109,12 @@ void create_new_project(const std::string& path) {
 
     std::ofstream proj(path + "/project.json");
     proj << R"({
-  "buildpath": "./build/output",
+  "buildpath": "./build/",
   "includepaths": ["./include/*"],
   "srcpath": "./src/main.cpp",
   "version":"1.0",
-  "type":"elf"
+  "type":"elf",
+  "name":"example"
 })";
     proj.close();
 

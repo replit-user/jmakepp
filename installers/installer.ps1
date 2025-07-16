@@ -8,10 +8,18 @@ param(
     })]
     [string]$Destination
 )
-
+Write-Host "warning: this script doesn't work sometimes"
+$okwithnotworking = Read-Host "are you ok with this(y/n): "
+if($okwithnotworking =="n"){
+    exit
+}elseif ($okwithnotworking == "y") {
+    <# Action when this condition is true #>
+}else{
+    exit
+}
 # Track if we installed Git
 $gitInstalled = $false
-$gitWasPresent = (Get-Command git -ErrorAction SilentlyContinue) -ne $null
+$gitWasPresent = $null -ne (Get-Command git -ErrorAction SilentlyContinue)
 
 # Install Git if not already present
 if (-not $gitWasPresent) {
@@ -19,10 +27,6 @@ if (-not $gitWasPresent) {
         Write-Host "Installing Git via winget..."
         winget install --id Git.Git -e --accept-package-agreements --accept-source-agreements
         $gitInstalled = $true
-        
-        # Refresh PATH to ensure Git is available
-        $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + 
-                    [System.Environment]::GetEnvironmentVariable("Path", "User")
     }
     catch {
         throw "Git installation failed: $_"
@@ -31,19 +35,19 @@ if (-not $gitWasPresent) {
 
 # Verify Git installation
 if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-    throw "Git not found after installation. Please ensure Git is in your PATH."
+    throw "Git not found after installation attempt"
 }
 
 # Clone repository
-$repoUrl = "https://github.com/replit-user/sbuild.git"
+$repoUrl = "https://actual-repository-url/yourproject.git"  # REPLACE WITH ACTUAL URL
 $tempDir = Join-Path -Path $env:TEMP -ChildPath "sbuild-clone-$(Get-Date -Format 'yyyyMMddHHmmss')"
 
 try {
-    Write-Host "Cloning repository from $repoUrl..."
+    Write-Host "Cloning repository..."
     git clone $repoUrl $tempDir
     
-    # Verify sbuild.py exists (now in root directory)
-    $sbuildPath = Join-Path -Path $tempDir -ChildPath "sbuild.py"
+    # Verify sbuild.py exists
+    $sbuildPath = Join-Path -Path $tempDir -ChildPath "bin\sbuild.py"
     if (-not (Test-Path -Path $sbuildPath -PathType Leaf)) {
         throw "sbuild.py not found in repository"
     }
@@ -78,7 +82,7 @@ $installDir = [System.IO.Path]::GetDirectoryName($Destination)
 $pathVar = [Environment]::GetEnvironmentVariable("Path", "User")
 
 if (-not $pathVar.Split(';').Contains($installDir)) {
-    Write-Host "Adding $installDir to user PATH..."
+    Write-Host "Adding $installDir to PATH..."
     $newPath = $pathVar + ";" + $installDir
     [Environment]::SetEnvironmentVariable("Path", $newPath, "User")
     
@@ -95,25 +99,10 @@ if ($gitInstalled) {
     try {
         Write-Host "Uninstalling Git..."
         winget uninstall --id Git.Git -e --accept-source-agreements
-        
-        # Refresh PATH after uninstallation
-        $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + 
-                    [System.Environment]::GetEnvironmentVariable("Path", "User")
-        
         Write-Host "Git successfully uninstalled" -ForegroundColor Green
     }
     catch {
         Write-Warning "Git uninstallation failed: $_"
         Write-Warning "You may need to uninstall manually: winget uninstall Git.Git"
     }
-}
-
-# Final verification
-try {
-    $sbuildCmd = Get-Command sbuild.py -ErrorAction Stop
-    Write-Host "Verification successful: sbuild.py is available at $($sbuildCmd.Source)" -ForegroundColor Green
-}
-catch {
-    Write-Warning "sbuild.py is not in PATH. You may need to start a new terminal session."
-    Write-Warning "Alternatively, run manually with: $Destination"
 }
