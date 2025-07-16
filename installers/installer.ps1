@@ -134,9 +134,11 @@ if ($gitInstalled) {
 try {
     $sbuildCmd = Get-Command sbuild.py -ErrorAction Stop
     Write-Host "Verification successful: sbuild.py is available at $($sbuildCmd.Source)" -ForegroundColor Green
-    Write-Host "Try it with: sbuild.py help"
+    Write-Host "Try it with: sbuild help"
 }
 catch {
     Write-Warning "sbuild.py is not in PATH. You may need to start a new terminal session."
     Write-Warning "Alternatively, run manually with: $(Join-Path $Destination 'sbuild.py')"
 }
+notepad $PROFILE
+Set-Alias sbuild sbuild.py
