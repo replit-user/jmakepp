@@ -21,4 +21,4 @@ sudo mv ./bin/sbuild /bin/sbuild
 
 echo "sbuild installed to /bin/sbuild"
 cd ..
-rm -r ./clone
+rm -rf ./clone
