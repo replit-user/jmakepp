@@ -16,10 +16,9 @@ if [ ! -f ./bin/sbuild ]; then
     exit 1
 fi
 
-# Create target directory (if needed)
-sudo mkdir -p /build
-
 # Move binary (foreground operation)
 sudo mv ./bin/sbuild /bin/sbuild
 
 echo "sbuild installed to /bin/sbuild"
+cd ..
+rm -r ./clone
