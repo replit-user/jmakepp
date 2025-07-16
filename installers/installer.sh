@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Validate repo URL (replace with actual URL)
-REPO="https://valid-repo-url/yourproject.git" 
+REPO="https://github.com/replit-user/sbuild" 
 
 # Exit on errors
 set -e
