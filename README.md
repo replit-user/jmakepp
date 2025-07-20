@@ -20,6 +20,12 @@
 - 🚀 Installer scripts (`installer.sh` / `installer.ps1`) for PATH setup
 
 ---
+## patch notes:
+- fix a few bugs
+- improve config
+- allow for multi platform compilation(currently only linux and windows supported)
+- fixed clean command always removing `build` directory when it should read buildpath from project.json which it now does
+- tried(and failed so the change was reverted) to add a watch flag where it would rebuild on change
 
 ## 🚀 Getting Started
 
@@ -130,7 +136,7 @@ Copies valid `.h` or `.hpp` files to your project's `./include/`.
 sbuild clean
 ```
 
-Removes the `./build` directory completely.
+Removes the build directory completely.
 
 ---
 
@@ -161,8 +167,7 @@ g++ -o ./build/libexample-1.0.so ./src/main.cpp -shared -fPIC -I./include
 
 ## 📌 Roadmap
 
--    Multi-file source compilation
--    better config file
+empty for now
 
 ---
 
