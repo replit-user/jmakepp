@@ -158,6 +158,8 @@ g++ -o ./build/libexample-1.0.so ./src/main.cpp -shared -fPIC -I./include
 ```
 
 ---
+### bonus:
+if you are on windows then you can use wsl install sbuild and create linux binaries on windows and on linux you can use virtualbox with a shared clipboard create a windows vm and create windows binaries then copy the file from the vm and paste it into your machine and you can test with wine
 
 ## 📌 Roadmap
 
