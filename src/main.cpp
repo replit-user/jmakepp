@@ -69,38 +69,41 @@ void build(std::string new_version) {
 
     fs::create_directories(fs::path(buildpath));
 
-    // Build base command
-    std::string command = "g++ -o " + buildpath + name + "-" + version + " " + src;
-    
-    // Add type flags
-    if (type == "elf") {
-        // Default - no special flags needed
-    } else if (type == "shared") {
-        command.append(" -shared -fPIC");
+    std::vector<std::string> platforms = config.value("platforms", std::vector<std::string>{"linux"});
+
+for (const std::string& platform : platforms) {
+    std::string compiler;
+    std::string extension;
+    if (platform == "linux") {
+        compiler = "g++";
+        extension = "";
+    } else if (platform == "windows") {
+        compiler = "x86_64-w64-mingw32-g++";  // Linux-to-Windows cross-compiler
+        extension = ".exe";
     } else {
-        std::cout << "❌ invalid type: " + type << std::endl;
-        return;
+        std::cerr << "⚠️ Unsupported platform: " << platform << "\n";
+        continue;
     }
 
-    // Add include paths
+    std::string outname = buildpath + name + "-" + version + "-" + platform + extension;
+    std::string command = compiler + " -o " + outname + " " + src;
+
+    if (type == "shared") command.append(" -shared -fPIC");
+
     std::vector<std::string> includes = expand_includes(includepaths);
-    for (const auto& inc : includes) {
-        command += " " + inc;
-    }
+    for (const auto& inc : includes) command += " " + inc;
 
     int result = run_cmd(command);
     if (result != 0) {
-        std::cout << "❌ Build failed.\n";
+        std::cout << "❌ Build failed for platform: " << platform << "\n";
     } else {
-        std::cout << "✅ Build successful -> " << buildpath << "-" << version << "\n";
-        
-        // Update version ONLY on successful build
-        config["version"] = new_version;
-        std::ofstream out("project.json");
-        out << config.dump(4);
-        out.close();
-        std::cout << "🔄 Updated version to: " << new_version << "\n";
+        std::cout << "✅ Built for " << platform << " -> " << outname << "\n";
     }
+}config["version"] = new_version;
+std::ofstream out("project.json");
+out << config.dump(4);
+std::cout << "🔄 Updated version to: " << new_version << "\n";
+
 }
 
 // Create new project directory
@@ -113,9 +116,11 @@ void create_new_project(const std::string& path) {
   "buildpath": "./build/",
   "includepaths": ["./include/*"],
   "srcpath": "./src/main.cpp",
-  "version":"1.0",
-  "type":"elf",
-  "name":"example"
+  "version": "1.0",
+  "type": "elf",
+  "name": "example",
+  "platforms": ["linux","windows"]
+]
 })";
     proj.close();
 
@@ -204,7 +209,7 @@ int main(int argc, char* argv[]) {
             std::cout << "Version: " << version << "\n";
             return 0;
         }else if(cmd == "clean"){
-            fs::remove_all("build");
+            fs::remove_all(load_project_config()["buildpath"]);
             std::cout << "✅ Cleaned build directory\n";
         }
         else {

@@ -9,52 +9,45 @@ param(
     [string]$Destination
 )
 
-# Track if we installed Git
+# Ensure Git is available
 $gitInstalled = $false
 $gitWasPresent = $null -ne (Get-Command git -ErrorAction SilentlyContinue)
 
-# Install Git if not already present
 if (-not $gitWasPresent) {
-    try {
-        Write-Host "Installing Git via winget..."
-        winget install --id Git.Git -e --accept-package-agreements --accept-source-agreements
-        $gitInstalled = $true
-        
-        # Refresh PATH to ensure Git is available
-        $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + 
-                    [System.Environment]::GetEnvironmentVariable("Path", "User")
-    }
-    catch {
-        throw "Git installation failed: $_"
-    }
+    Write-Host "📦 Installing Git via winget..."
+    winget install --id Git.Git -e --accept-package-agreements --accept-source-agreements
+    $gitInstalled = $true
 }
 
-# Verify Git installation
-if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-    throw "Git not found after installation. Please ensure Git is in your PATH."
+# Ensure g++ is available
+if (-not (Get-Command g++ -ErrorAction SilentlyContinue)) {
+    Write-Host "📦 Installing g++ via winget..."
+    winget install --id "GnuWin32.Gcc" -e --accept-package-agreements --accept-source-agreements
 }
 
-# Clone repository - using quoted paths for spaces
+# Ensure WSL for cross-compiling to Linux
+if (-not (Get-Command wsl -ErrorAction SilentlyContinue)) {
+    Write-Host "❌ WSL not found. Linux cross-compilation requires WSL (Windows Subsystem for Linux)."
+    Write-Host "Please install WSL with: wsl --install"
+}
+
+# Clone repo
 $repoUrl = "https://github.com/replit-user/sbuild"
 $tempDir = Join-Path -Path $env:TEMP -ChildPath "sbuild-clone-$(Get-Date -Format 'yyyyMMddHHmmss')"
 
 try {
-    Write-Host "Cloning repository from $repoUrl..."
-    
-    # Use quoted paths to handle spaces
     git clone $repoUrl "`"$tempDir`""
     if ($LASTEXITCODE -ne 0) {
         throw "Git clone failed with exit code $LASTEXITCODE"
     }
-    
-    # Verify sbuild.exe exists - handle repository structure
+
     $possiblePaths = @(
-        (Join-Path -Path $tempDir -ChildPath "sbuild.exe"),
-        (Join-Path -Path $tempDir -ChildPath "sbuild-main\sbuild.exe"),
-        (Join-Path -Path $tempDir -ChildPath "sbuild\sbuild.exe"),
-    (Join-Path -Path $tempDir -ChildPath "\bin\sbuild.exe")
+        "$tempDir\sbuild.exe",
+        "$tempDir\sbuild-main\sbuild.exe",
+        "$tempDir\sbuild\sbuild.exe",
+        "$tempDir\bin\sbuild.exe"
     )
-    
+
     $sbuildPath = $null
     foreach ($path in $possiblePaths) {
         if (Test-Path -Path $path -PathType Leaf) {
@@ -62,81 +55,49 @@ try {
             break
         }
     }
-    
+
     if (-not $sbuildPath) {
-        throw "sbuild.exe not found in repository. Checked locations: $($possiblePaths -join ', ')"
+        throw "sbuild.exe not found. Checked: $($possiblePaths -join ', ')"
     }
 
-    # Create destination directory if needed
-    if (-not (Test-Path -Path $Destination -PathType Container)) {
+    if (-not (Test-Path -Path $Destination)) {
         New-Item -ItemType Directory -Path $Destination -Force | Out-Null
     }
 
-    # Copy sbuild.exe to destination directory
-    $finalPath = Join-Path -Path $Destination -ChildPath "sbuild.exe"
-    Write-Host "Copying sbuild.exe to $finalPath"
+    $finalPath = Join-Path $Destination "sbuild.exe"
     Copy-Item -Path $sbuildPath -Destination $finalPath -Force
-    
-    # Verify copy succeeded
-    if (-not (Test-Path -Path $finalPath -PathType Leaf)) {
-        throw "Copy operation failed. Source: $sbuildPath, Destination: $finalPath"
-    }
 
-    Write-Host "sbuild.exe successfully installed to $finalPath" -ForegroundColor Green
+    Write-Host "✅ sbuild.exe installed to $finalPath" -ForegroundColor Green
 }
 finally {
-    # Cleanup temporary files with error handling
-    if (Test-Path -Path $tempDir) {
-        try {
-            Write-Host "Cleaning up temporary files..."
-            Remove-Item -LiteralPath $tempDir -Recurse -Force -ErrorAction Stop
-        }
-        catch {
-            Write-Warning "Cleanup failed: $_"
-            Write-Warning "Please manually remove: $tempDir"
-        }
+    if (Test-Path $tempDir) {
+        Remove-Item -LiteralPath $tempDir -Recurse -Force -ErrorAction SilentlyContinue
     }
 }
 
-# Add to PATH
+# Add to PATH if needed
 if (-not ($env:Path -split ';' -contains $Destination)) {
-    Write-Host "Adding $Destination to user PATH..."
     $newPath = [Environment]::GetEnvironmentVariable("Path", "User") + ";" + $Destination
     [Environment]::SetEnvironmentVariable("Path", $newPath, "User")
-    
-    # Update current session PATH
     $env:Path += ";$Destination"
-    Write-Host "Directory added to PATH for current session" -ForegroundColor Green
-}
-else {
-    Write-Host "$Destination is already in PATH" -ForegroundColor Yellow
+    Write-Host "🛠️ Added $Destination to PATH (user)" -ForegroundColor Yellow
 }
 
-# Uninstall Git if we installed it
+# Uninstall Git if it was auto-installed
 if ($gitInstalled) {
     try {
-        Write-Host "Uninstalling Git..."
         winget uninstall --id Git.Git -e --accept-source-agreements
-        
-        # Refresh PATH after uninstallation
-        $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + 
-                    [System.Environment]::GetEnvironmentVariable("Path", "User")
-        
-        Write-Host "Git successfully uninstalled" -ForegroundColor Green
-    }
-    catch {
-        Write-Warning "Git uninstallation failed: $_"
-        Write-Warning "You may need to uninstall manually: winget uninstall Git.Git"
+        Write-Host "✅ Git uninstalled"
+    } catch {
+        Write-Warning "⚠️ Git uninstallation failed. Uninstall manually via winget or Control Panel."
     }
 }
 
-# Final verification
+# Final check
 try {
     $sbuildCmd = Get-Command sbuild.exe -ErrorAction Stop
-    Write-Host "Verification successful: sbuild is available at $($sbuildCmd.Source)" -ForegroundColor Green
+    Write-Host "🎉 sbuild is available at $($sbuildCmd.Source)" -ForegroundColor Green
     Write-Host "Try it with: sbuild help"
-}
-catch {
-    Write-Warning "sbuild.exe is not in PATH. You may need to start a new terminal session."
-    Write-Warning "Alternatively, run manually with: $(Join-Path $Destination 'sbuild')"
+} catch {
+    Write-Warning "⚠️ sbuild not found in PATH. You may need to restart the terminal or run it with full path."
 }
