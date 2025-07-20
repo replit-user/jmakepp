@@ -120,7 +120,6 @@ void create_new_project(const std::string& path) {
   "type": "elf",
   "name": "example",
   "platforms": ["linux","windows"]
-]
 })";
     proj.close();
 
