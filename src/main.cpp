@@ -6,12 +6,13 @@
 #include <regex>
 
 #include "../include/nlohmann/json.hpp" // JSON library
+#include "../include/dauser/filio.h" // simpler file I/O
 
 #include <filesystem>
 namespace fs = std::filesystem;
 
 using json = nlohmann::json;
-
+std::string version = "1.6.0";
 // Utility to run a system command and print it
 int run_cmd(const std::string& cmd) {
     std::cout << "🚧 Running: " << cmd << "\n";
@@ -168,7 +169,7 @@ void install_headers(const std::string& from_path) {
 // Main CLI dispatcher
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        std::cout << "Usage: mybuild [build|new|install|help] [optional args]\n";
+        std::cout << "Usage: sbuild [build|new|install|help] [optional args]\n";
         return 1;
     }
 
@@ -177,19 +178,19 @@ int main(int argc, char* argv[]) {
     try {
         if (cmd == "build") {
             if (argc < 3) {
-                std::cout << "Usage: mybuild build <new_version>\n";
+                std::cout << "Usage: sbuild build <new_version>\n";
                 return 1;
             }
             build(argv[2]);
         } else if (cmd == "new") {
             if (argc < 3) {
-                std::cout << "Usage: mybuild new <path>\n";
+                std::cout << "Usage: sbuild new <path>\n";
                 return 1;
             }
             create_new_project(argv[2]);
         } else if (cmd == "install") {
             if (argc < 3) {
-                std::cout << "Usage: mybuild install <path>\n";
+                std::cout << "Usage: sbuild install <path>\n";
                 return 1;
             }
             install_headers(argv[2]);
@@ -199,7 +200,14 @@ int main(int argc, char* argv[]) {
                       << "  build <version> - Builds project and updates version\n"
                       << "  install <path>  - Installs headers from path\n"
                       << "  help            - Shows this message\n";
-        } else {
+        } else if(cmd == "version") {
+            std::cout << "Version: " << version << "\n";
+            return 0;
+        }else if(cmd == "clean"){
+            fs::remove_all("build");
+            std::cout << "✅ Cleaned build directory\n";
+        }
+        else {
             std::cout << "❌ Unknown command: " << cmd << "\n";
             return 1;
         }

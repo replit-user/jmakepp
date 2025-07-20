@@ -11,7 +11,7 @@ param(
 
 # Track if we installed Git
 $gitInstalled = $false
-$gitWasPresent = (Get-Command git -ErrorAction SilentlyContinue) -ne $null
+$gitWasPresent = $null -ne (Get-Command git -ErrorAction SilentlyContinue)
 
 # Install Git if not already present
 if (-not $gitWasPresent) {
@@ -35,7 +35,7 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
 }
 
 # Clone repository - using quoted paths for spaces
-$repoUrl = "https://github.com/replit-user/sbuild.git"
+$repoUrl = "https://github.com/replit-user/sbuild"
 $tempDir = Join-Path -Path $env:TEMP -ChildPath "sbuild-clone-$(Get-Date -Format 'yyyyMMddHHmmss')"
 
 try {
@@ -49,10 +49,10 @@ try {
     
     # Verify sbuild.py exists - handle repository structure
     $possiblePaths = @(
-        (Join-Path -Path $tempDir -ChildPath "sbuild.py"),
-        (Join-Path -Path $tempDir -ChildPath "sbuild-main\sbuild.py"),
-        (Join-Path -Path $tempDir -ChildPath "sbuild\sbuild.py"),
-    (Join-Path -Path $tempDir -ChildPath "\bin\sbuild.py")
+        (Join-Path -Path $tempDir -ChildPath "sbuild.exe"),
+        (Join-Path -Path $tempDir -ChildPath "sbuild-main\sbuild.exe"),
+        (Join-Path -Path $tempDir -ChildPath "sbuild\sbuild.exe"),
+    (Join-Path -Path $tempDir -ChildPath "\bin\sbuild.exe")
     )
     
     $sbuildPath = $null
