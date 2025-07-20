@@ -47,7 +47,7 @@ try {
         throw "Git clone failed with exit code $LASTEXITCODE"
     }
     
-    # Verify sbuild.py exists - handle repository structure
+    # Verify sbuild.exe exists - handle repository structure
     $possiblePaths = @(
         (Join-Path -Path $tempDir -ChildPath "sbuild.exe"),
         (Join-Path -Path $tempDir -ChildPath "sbuild-main\sbuild.exe"),
@@ -64,7 +64,7 @@ try {
     }
     
     if (-not $sbuildPath) {
-        throw "sbuild.py not found in repository. Checked locations: $($possiblePaths -join ', ')"
+        throw "sbuild.exe not found in repository. Checked locations: $($possiblePaths -join ', ')"
     }
 
     # Create destination directory if needed
@@ -72,9 +72,9 @@ try {
         New-Item -ItemType Directory -Path $Destination -Force | Out-Null
     }
 
-    # Copy sbuild.py to destination directory
-    $finalPath = Join-Path -Path $Destination -ChildPath "sbuild.py"
-    Write-Host "Copying sbuild.py to $finalPath"
+    # Copy sbuild.exe to destination directory
+    $finalPath = Join-Path -Path $Destination -ChildPath "sbuild.exe"
+    Write-Host "Copying sbuild.exe to $finalPath"
     Copy-Item -Path $sbuildPath -Destination $finalPath -Force
     
     # Verify copy succeeded
@@ -82,7 +82,7 @@ try {
         throw "Copy operation failed. Source: $sbuildPath, Destination: $finalPath"
     }
 
-    Write-Host "sbuild.py successfully installed to $finalPath" -ForegroundColor Green
+    Write-Host "sbuild.exe successfully installed to $finalPath" -ForegroundColor Green
 }
 finally {
     # Cleanup temporary files with error handling
@@ -132,11 +132,11 @@ if ($gitInstalled) {
 
 # Final verification
 try {
-    $sbuildCmd = Get-Command sbuild.py -ErrorAction Stop
+    $sbuildCmd = Get-Command sbuild.exe -ErrorAction Stop
     Write-Host "Verification successful: sbuild is available at $($sbuildCmd.Source)" -ForegroundColor Green
     Write-Host "Try it with: sbuild help"
 }
 catch {
-    Write-Warning "sbuild.py is not in PATH. You may need to start a new terminal session."
+    Write-Warning "sbuild.exe is not in PATH. You may need to start a new terminal session."
     Write-Warning "Alternatively, run manually with: $(Join-Path $Destination 'sbuild')"
 }
