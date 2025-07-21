@@ -21,11 +21,7 @@
 
 ---
 ## patch notes:
-- fix a few bugs
-- improve config
-- allow for multi platform compilation(currently only linux and windows supported)
-- fixed clean command always removing `build` directory when it should read buildpath from project.json which it now does
-- tried(and failed so the change was reverted) to add a watch flag where it would rebuild on change
+- fix a bug where the executable would fail to run on windows
 
 ## 🚀 Getting Started
 
