@@ -12,7 +12,7 @@
 namespace fs = std::filesystem;
 
 using json = nlohmann::json;
-std::string version = "1.7.0";
+std::string version = "1.7.0-fix";
 // Utility to run a system command and print it
 int run_cmd(const std::string& cmd) {
     std::cout << "🚧 Running: " << cmd << "\n";
