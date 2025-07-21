@@ -97,7 +97,7 @@ if ($gitInstalled) {
 try {
     $sbuildCmd = Get-Command sbuild.exe -ErrorAction Stop
     Write-Host "🎉 sbuild is available at $($sbuildCmd.Source)" -ForegroundColor Green
-    Write-Host "Try it with: sbuild version, it should output 1.7.0-fix"
+    Write-Host "Try it with: sbuild version, should output 1.7.1"
 } catch {
     Write-Warning "⚠️ sbuild not found in PATH. You may need to restart the terminal or run it with full path."
 }

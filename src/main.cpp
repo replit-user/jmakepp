@@ -4,7 +4,7 @@
 #include <string>
 #include <cstdlib>
 #include <regex>
-
+#include <sstream>
 #include "../include/nlohmann/json.hpp" // JSON library
 #include "../include/dauser/filio.h" // simpler file I/O
 
@@ -12,11 +12,17 @@
 namespace fs = std::filesystem;
 
 using json = nlohmann::json;
-std::string version = "1.7.0-fix";
+std::string version = "1.7.1";
 // Utility to run a system command and print it
 int run_cmd(const std::string& cmd) {
     std::cout << "🚧 Running: " << cmd << "\n";
-    return std::system(cmd.c_str());
+    int result = std::system(cmd.c_str());
+if(result == 0){
+    return 0;
+}else{
+    std::cerr << cmd << "failed with code " << result;
+    return 1;
+}
 }
 
 // Load JSON config from file
@@ -65,46 +71,64 @@ void build(std::string new_version) {
     std::string src = config["srcpath"];
     std::string type = config["type"];
     std::vector<std::string> includepaths = config.value("includepaths", std::vector<std::string>{"./include/*"});
-    std::string version = config["version"];
+    std::string config_version = config["version"];
+    std::vector<std::string> flags;
+
+    // Support both array and string format for flags
+    if (config["flags"].is_string()) {
+        std::istringstream iss(config["flags"].get<std::string>());
+        std::string flag;
+        while (iss >> flag) flags.push_back(flag);
+    } else if (config["flags"].is_array()) {
+        flags = config["flags"].get<std::vector<std::string>>();
+    }
 
     fs::create_directories(fs::path(buildpath));
-
     std::vector<std::string> platforms = config.value("platforms", std::vector<std::string>{"linux"});
 
-for (const std::string& platform : platforms) {
-    std::string compiler;
-    std::string extension;
-    if (platform == "linux") {
-        compiler = "g++";
-        extension = "";
-    } else if (platform == "windows") {
-        compiler = "x86_64-w64-mingw32-g++";  // Linux-to-Windows cross-compiler
-        extension = ".exe";
-    } else {
-        std::cerr << "⚠️ Unsupported platform: " << platform << "\n";
-        continue;
+    for (const std::string& platform : platforms) {
+        std::string compiler, extension;
+        if (platform == "linux") {
+            compiler = "g++";
+            extension = "";
+        } else if (platform == "windows") {
+            compiler = "x86_64-w64-mingw32-g++";
+            extension = ".exe";
+        } else {
+            std::cerr << "⚠️ Unsupported platform: " << platform << "\n";
+            continue;
+        }
+
+        std::string outname = buildpath + name + "-" + config_version + "-" + platform + extension;
+        std::string command = compiler + " -o \"" + outname + "\" \"" + src + "\"";
+
+        for (const auto& flag : flags) {
+            command += " " + flag;
+        }
+
+        if (type == "shared") {
+            command += " -shared -fPIC";
+        }
+
+        std::vector<std::string> includes = expand_includes(includepaths);
+        for (const auto& inc : includes) {
+            command += " " + inc;
+        }
+
+        int result = run_cmd(command);
+        if (result != 0) {
+            std::cout << "❌ Build failed for platform: " << platform << "\n";
+        } else {
+            std::cout << "✅ Built for " << platform << " -> " << outname << "\n";
+        }
     }
 
-    std::string outname = buildpath + name + "-" + version + "-" + platform + extension;
-    std::string command = compiler + " -o " + outname + " " + src;
-
-    if (type == "shared") command.append(" -shared -fPIC");
-
-    std::vector<std::string> includes = expand_includes(includepaths);
-    for (const auto& inc : includes) command += " " + inc;
-
-    int result = run_cmd(command);
-    if (result != 0) {
-        std::cout << "❌ Build failed for platform: " << platform << "\n";
-    } else {
-        std::cout << "✅ Built for " << platform << " -> " << outname << "\n";
-    }
-}config["version"] = new_version;
-std::ofstream out("project.json");
-out << config.dump(4);
-std::cout << "🔄 Updated version to: " << new_version << "\n";
-
+    config["version"] = new_version;
+    std::ofstream out("project.json");
+    out << config.dump(4);
+    std::cout << "🔄 Updated version to: " << new_version << "\n";
 }
+
 
 // Create new project directory
 void create_new_project(const std::string& path) {

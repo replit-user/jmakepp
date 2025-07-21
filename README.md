@@ -2,7 +2,7 @@
 
 `sbuild` is a lightweight, zero-dependency build system for C++ projects, written in C++. It replaces complex systems like Make and CMake for small to mid-size projects with a single JSON configuration file and intuitive CLI.
 
-**Version:** `1.7.0-fix`  
+**Version:** `1.7.1`  
 **Platforms:** Windows ✅ & Linux ✅  
 **Dependencies:** `g++`, `nlohmann/json`, and optionally `filio.h` (bundled or install separately)
 
@@ -21,7 +21,8 @@
 
 ---
 ## patch notes:
-- fix a bug where the executable would fail to run on windows
+- move project to sbuild, this means that this program can now build itself
+- add flags key in project.json allowing for additional flags eg instead of type:"shared" you can have flags be "-shared -FPIC" or \["-shared","-FPIC"\]
 
 ## 🚀 Getting Started
 
