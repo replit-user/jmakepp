@@ -28,7 +28,7 @@ fi
 # Move binary
 sudo mv ./bin/sbuild /usr/bin/sbuild
 echo "✅ sbuild installed to /usr/bin/sbuild"
-echo "Try it with: sbuild version, should output 1.7.1"
+echo "Try it with: sbuild version, should output 1.7.2"
 
 cd ..
 rm -rf ./clone
