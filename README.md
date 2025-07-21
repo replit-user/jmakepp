@@ -84,7 +84,8 @@ You’ll see:
   "buildpath": "./build/",
   "includepaths": ["./include/*"],
   "srcpath": "./src/main.cpp",
-  "type": "elf"
+  "type": "elf",
+  "flags":"-std=c++17"
 }
 ```
 
