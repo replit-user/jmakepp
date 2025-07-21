@@ -12,7 +12,7 @@
 namespace fs = std::filesystem;
 
 using json = nlohmann::json;
-std::string version = "1.7.1";
+std::string version = "1.7.2";
 // Utility to run a system command and print it
 int run_cmd(const std::string& cmd) {
     std::cout << "🚧 Running: " << cmd << "\n";
@@ -137,6 +137,7 @@ void create_new_project(const std::string& path) {
 
     std::ofstream proj(path + "/project.json");
     proj << R"({
+  "flags":"-std=c++17",
   "buildpath": "./build/",
   "includepaths": ["./include/*"],
   "srcpath": "./src/main.cpp",

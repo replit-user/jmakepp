@@ -2,7 +2,7 @@
 
 `sbuild` is a lightweight, zero-dependency build system for C++ projects, written in C++. It replaces complex systems like Make and CMake for small to mid-size projects with a single JSON configuration file and intuitive CLI.
 
-**Version:** `1.7.1`  
+**Version:** `1.7.2`  
 **Platforms:** Windows ✅ & Linux ✅  
 **Dependencies:** `g++`, `nlohmann/json`, and optionally `filio.h` (bundled or install separately)
 
@@ -84,8 +84,7 @@ You’ll see:
   "buildpath": "./build/",
   "includepaths": ["./include/*"],
   "srcpath": "./src/main.cpp",
-  "type": "elf",
-  "flags":"-std=c++17"
+  "type": "elf"
 }
 ```
 
