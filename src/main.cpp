@@ -12,7 +12,7 @@
 namespace fs = std::filesystem;
 
 using json = nlohmann::json;
-std::string version = "1.7.2";
+std::string version = "1.7.3";
 // Utility to run a system command and print it
 int run_cmd(const std::string& cmd) {
     std::cout << "🚧 Running: " << cmd << "\n";
@@ -149,7 +149,7 @@ void create_new_project(const std::string& path) {
     proj.close();
 
     std::ofstream maincpp(path + "/src/main.cpp");
-    maincpp << "#include <iostream>\nint main() {\n    std::cout << \"Hello from " << path << "!\\n\";\n    return 0;\n}\n";
+    maincpp << "#include <iostream>\nint main() {\n    std::cout << \"Hello from " << fs::absolute(path) << "!\\n\";\n    return 0;\n}\n";
     maincpp.close();
 
     std::cout << "✅ Project created at: " << path << "\n";

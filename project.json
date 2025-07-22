@@ -12,5 +12,5 @@
     ],
     "srcpath": "./src/main.cpp",
     "type": "elf",
-    "version": "1.7.2"
+    "version": "1.7.3"
 }
