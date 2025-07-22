@@ -91,7 +91,8 @@ You’ll see:
   "buildpath": "./build/",
   "includepaths": ["./include/*"],
   "srcpath": "./src/main.cpp",
-  "type": "elf"
+  "type": "elf",
+  "flags":""
 }
 ```
 
@@ -105,6 +106,7 @@ You’ll see:
 | `includepaths` | `array[string]` | List of include directories (supports `*`) |
 | `srcpath` | `string` | Source file(s) (currently only one path) |
 | `type` | `"elf"` or `"shared"` | Build target: executable or shared lib |
+| `flags`| `string or list of strings`| `additional flags to add to g++`
 
 ---
 
