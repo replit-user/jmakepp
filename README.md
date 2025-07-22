@@ -41,7 +41,14 @@
 
 These scripts copy the `sbuild` binary to a directory in your `PATH`.
 
+###### or if you have an older version of sbuild:
+```bash
+git clone https://github.com/replit-user/sbuild ./sbuild
+cd sbuild
+sbuild build
 ---
+```
+however this will only work if the version of sbuild you have supports the flags key in project.json
 
 ## 🔧 Commands
 
