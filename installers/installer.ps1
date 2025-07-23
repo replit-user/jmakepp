@@ -42,10 +42,10 @@ try {
     }
 
     $possiblePaths = @(
-        "$tempDir\jmakepp.exe",
-        "$tempDir\jmakepp-main\jmakepp.exe",
-        "$tempDir\jmakepp\jmakepp.exe",
-        "$tempDir\bin\jmakepp.exe"
+        "$tempDir\jmake.exe",
+        "$tempDir\jmake-main\jmake.exe",
+        "$tempDir\jmakepp\jmake.exe",
+        "$tempDir\bin\jmake.exe"
     )
 
     $jmakeppPath = $null
