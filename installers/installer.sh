@@ -3,7 +3,7 @@
 # Exit on any error
 set -e
 
-REPO="https://github.com/replit-user/sbuild"
+REPO="https://github.com/replit-user/jmakepp"
 
 echo "🔍 Checking for cross-compilers..."
 
