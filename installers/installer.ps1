@@ -33,7 +33,7 @@ if (-not (Get-Command wsl -ErrorAction SilentlyContinue)) {
 
 # Clone repo
 $repoUrl = "https://github.com/replit-user/jmakepp"
-$tempDir = Join-Path -Path $env:TEMP -ChildPath "sbuild-clone-$(Get-Date -Format 'yyyyMMddHHmmss')"
+$tempDir = Join-Path -Path $env:TEMP -ChildPath "jmakepp-clone-$(Get-Date -Format 'yyyyMMddHHmmss')"
 
 try {
     git clone $repoUrl "`"$tempDir`""
@@ -42,32 +42,32 @@ try {
     }
 
     $possiblePaths = @(
-        "$tempDir\sbuild.exe",
-        "$tempDir\sbuild-main\sbuild.exe",
-        "$tempDir\sbuild\sbuild.exe",
-        "$tempDir\bin\sbuild.exe"
+        "$tempDir\jmakepp.exe",
+        "$tempDir\jmakepp-main\jmakepp.exe",
+        "$tempDir\jmakepp\jmakepp.exe",
+        "$tempDir\bin\jmakepp.exe"
     )
 
-    $sbuildPath = $null
+    $jmakeppPath = $null
     foreach ($path in $possiblePaths) {
         if (Test-Path -Path $path -PathType Leaf) {
-            $sbuildPath = $path
+            $jmakeppPath = $path
             break
         }
     }
 
-    if (-not $sbuildPath) {
-        throw "sbuild.exe not found. Checked: $($possiblePaths -join ', ')"
+    if (-not $jmakeppPath) {
+        throw "jmakepp.exe not found. Checked: $($possiblePaths -join ', ')"
     }
 
     if (-not (Test-Path -Path $Destination)) {
         New-Item -ItemType Directory -Path $Destination -Force | Out-Null
     }
 
-    $finalPath = Join-Path $Destination "sbuild.exe"
-    Copy-Item -Path $sbuildPath -Destination $finalPath -Force
+    $finalPath = Join-Path $Destination "jmakepp.exe"
+    Copy-Item -Path $jmakeppPath -Destination $finalPath -Force
 
-    Write-Host "✅ sbuild.exe installed to $finalPath" -ForegroundColor Green
+    Write-Host "✅ jmakepp.exe installed to $finalPath" -ForegroundColor Green
 }
 finally {
     if (Test-Path $tempDir) {
@@ -95,9 +95,9 @@ if ($gitInstalled) {
 
 # Final check
 try {
-    $sbuildCmd = Get-Command sbuild.exe -ErrorAction Stop
-    Write-Host "🎉 sbuild is available at $($sbuildCmd.Source)" -ForegroundColor Green
-    Write-Host "Try it with: sbuild version, should output 1.7.3"
+    $jmakeppCmd = Get-Command jmakepp.exe -ErrorAction Stop
+    Write-Host "🎉 jmakepp is available at $($jmakeppCmd.Source)" -ForegroundColor Green
+    Write-Host "Try it with: jmakepp version, should output 1.7.3"
 } catch {
-    Write-Warning "⚠️ sbuild not found in PATH. You may need to restart the terminal or run it with full path."
+    Write-Warning "⚠️ jmakepp not found in PATH. You may need to restart the terminal or run it with full path."
 }
