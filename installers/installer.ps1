@@ -32,7 +32,7 @@ if (-not (Get-Command wsl -ErrorAction SilentlyContinue)) {
 }
 
 # Clone repo
-$repoUrl = "https://github.com/replit-user/sbuild"
+$repoUrl = "https://github.com/replit-user/jmakepp"
 $tempDir = Join-Path -Path $env:TEMP -ChildPath "sbuild-clone-$(Get-Date -Format 'yyyyMMddHHmmss')"
 
 try {
