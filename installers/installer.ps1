@@ -64,7 +64,7 @@ try {
         New-Item -ItemType Directory -Path $Destination -Force | Out-Null
     }
 
-    $finalPath = Join-Path $Destination "jmakepp.exe"
+    $finalPath = Join-Path $Destination "jmake.exe"
     Copy-Item -Path $jmakeppPath -Destination $finalPath -Force
 
     Write-Host "✅ jmakepp.exe installed to $finalPath" -ForegroundColor Green

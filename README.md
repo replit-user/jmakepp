@@ -90,7 +90,11 @@ You’ll see:
   "includepaths": ["./include/*"],
   "srcpath": "./src/main.cpp",
   "type": "elf",
-  "flags":""
+  "flags":"",
+  "platforms":[
+    "windows",
+    "linux"
+  ]
 }
 ```
 
@@ -105,7 +109,7 @@ You’ll see:
 | `srcpath` | `string` | Source file(s) (currently only one path) |
 | `type` | `"elf"` or `"shared"` | Build target: executable or shared lib |
 | `flags`| `string or list of strings`| `additional flags to add to g++`
-
+|`platforms`|`list of strings, either windows or linux`|`the platofrms to compile with`|
 ---
 
 ## 📁 Directory Layout (after `jmake++ new`)

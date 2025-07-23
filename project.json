@@ -5,7 +5,7 @@
         "./include/nlohmann",
         "./include/dauser"
     ],
-    "name": "sbuild",
+    "name": "jmake",
     "platforms": [
         "windows",
         "linux"
