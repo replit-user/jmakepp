@@ -1,6 +1,6 @@
-# 🔨 sbuild — Simple C++ Build Tool
+# 🔨 jmake++ — Simple C++ Build Tool
 
-`sbuild` is a lightweight, zero-dependency build system for C++ projects, written in C++. It replaces complex systems like Make and CMake for small to mid-size projects with a single JSON configuration file and intuitive CLI.
+`jmake++` is a lightweight, zero-dependency build system for C++ projects, written in C++. It replaces complex systems like Make and CMake for small to mid-size projects with a single JSON configuration file and intuitive CLI.
 
 **Version:** `1.7.3`  
 **Platforms:** Windows ✅ & Linux ✅  
@@ -37,26 +37,26 @@
 ./installer.ps1
 ```
 
-These scripts copy the `sbuild` binary to a directory in your `PATH`.
+These scripts copy the `jmake++` binary to a directory in your `PATH`.
 
-###### or if you have an older version of sbuild:
+###### or if you have an older version of jmake++:
 ```bash
-git clone https://github.com/replit-user/sbuild ./sbuild
-cd sbuild
-sbuild build
+git clone https://github.com/replit-user/jmake++ ./jmake++
+cd jmake++
+jmake++ build
 ---
 ```
-however this will only work if the version of sbuild you have supports the flags key in project.json
+however this will only work if the version of jmake++ you have supports the flags key in project.json
 
 ## 🔧 Commands
 
 ```bash
-sbuild new <path>      # Create a new project in the given directory
-sbuild build <version> # Build the project and update version in project.json
-sbuild install <path>  # Install .h/.hpp files to ./include
-sbuild clean           # Remove the ./build directory
-sbuild version         # Show sbuild version
-sbuild help            # Show available commands
+jmake++ new <path>      # Create a new project in the given directory
+jmake++ build <version> # Build the project and update version in project.json
+jmake++ install <path>  # Install .h/.hpp files to ./include
+jmake++ clean           # Remove the ./build directory
+jmake++ version         # Show jmake++ version
+jmake++ help            # Show available commands
 ```
 
 ---
@@ -64,9 +64,9 @@ sbuild help            # Show available commands
 ## 🛠 Example Workflow
 
 ```bash
-sbuild new myproject
+jmake++ new myproject
 cd myproject
-sbuild build 1.1.0
+jmake++ build 1.1.0
 ./build/example-1.1.0
 ```
 
@@ -108,7 +108,7 @@ You’ll see:
 
 ---
 
-## 📁 Directory Layout (after `sbuild new`)
+## 📁 Directory Layout (after `jmake++ new`)
 
 ```pgsql
 myproject/
@@ -126,8 +126,8 @@ myproject/
 Install individual headers or full directories:
 
 ```bash
-sbuild install path/to/header.hpp
-sbuild install include/
+jmake++ install path/to/header.hpp
+jmake++ install include/
 ```
 
 Copies valid `.h` or `.hpp` files to your project's `./include/`.
@@ -137,7 +137,7 @@ Copies valid `.h` or `.hpp` files to your project's `./include/`.
 ## 🧼 Clean Build Artifacts
 
 ```bash
-sbuild clean
+jmake++ clean
 ```
 
 Removes the build directory completely.
