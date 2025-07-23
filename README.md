@@ -37,13 +37,13 @@
 ./installer.ps1
 ```
 
-These scripts copy the `jmake++` binary to a directory in your `PATH`.
+These scripts copy the `jmake` binary to a directory in your `PATH`.
 
 ###### or if you have an older version of jmake++:
 ```bash
-git clone https://github.com/replit-user/jmake++ ./jmake++
-cd jmake++
-jmake++ build
+git clone https://github.com/replit-user/jmakepp ./jmakepp
+cd jmakepp
+jmake build
 ---
 ```
 however this will only work if the version of jmake++ you have supports the flags key in project.json
@@ -51,12 +51,12 @@ however this will only work if the version of jmake++ you have supports the flag
 ## 🔧 Commands
 
 ```bash
-jmake++ new <path>      # Create a new project in the given directory
-jmake++ build <version> # Build the project and update version in project.json
-jmake++ install <path>  # Install .h/.hpp files to ./include
-jmake++ clean           # Remove the ./build directory
-jmake++ version         # Show jmake++ version
-jmake++ help            # Show available commands
+jmake new <path>      # Create a new project in the given directory
+jmake build <version> # Build the project and update version in project.json
+jmake install <path>  # Install .h/.hpp files to ./include
+jmake clean           # Remove the ./build directory
+jmake version         # Show jmake++ version
+jmake help            # Show available commands
 ```
 
 ---
@@ -64,9 +64,9 @@ jmake++ help            # Show available commands
 ## 🛠 Example Workflow
 
 ```bash
-jmake++ new myproject
+jmake new myproject
 cd myproject
-jmake++ build 1.1.0
+jmake build 1.1.0
 ./build/example-1.1.0
 ```
 
@@ -126,8 +126,8 @@ myproject/
 Install individual headers or full directories:
 
 ```bash
-jmake++ install path/to/header.hpp
-jmake++ install include/
+jmake install path/to/header.hpp
+jmake install include/
 ```
 
 Copies valid `.h` or `.hpp` files to your project's `./include/`.
@@ -137,7 +137,7 @@ Copies valid `.h` or `.hpp` files to your project's `./include/`.
 ## 🧼 Clean Build Artifacts
 
 ```bash
-jmake++ clean
+jmake clean
 ```
 
 Removes the build directory completely.
