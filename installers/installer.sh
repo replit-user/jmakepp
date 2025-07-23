@@ -20,15 +20,15 @@ git clone "$REPO" ./clone
 cd clone
 
 # Verify binary exists
-if [ ! -f ./bin/sbuild ]; then
-    echo "❌ Error: sbuild binary not found in repo!"
+if [ ! -f ./bin/jmakepp ]; then
+    echo "❌ Error: jmakepp binary not found in repo!"
     exit 1
 fi
 
 # Move binary
-sudo mv ./bin/sbuild /usr/bin/sbuild
-echo "✅ sbuild installed to /usr/bin/sbuild"
-echo "Try it with: sbuild version, should output 1.7.3"
+sudo mv ./bin/jmakepp /usr/bin/jmakepp
+echo "✅ jmakepp installed to /usr/bin/jmakepp"
+echo "Try it with: jmakepp version, should output 1.7.3"
 
 cd ..
 rm -rf ./clone
