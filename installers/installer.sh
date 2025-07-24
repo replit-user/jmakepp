@@ -24,7 +24,7 @@ if [ ! -f ./bin/jmake ]; then
     echo "❌ Error: jmakepp binary not found in repo!"
     exit 1
 fi
-
+chmod +x ./bin/jmake
 # Move binary
 sudo mv ./bin/jmakepp /usr/bin/jmakepp
 echo "✅ jmakepp installed to /usr/bin/jmakepp"
