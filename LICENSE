@@ -1,12 +1,12 @@
 # Responsible Sharing License v1.0
 
-This license governs the use, modification, and redistribution of jmakepp (“the Software”) and any associated mods.
+This license governs the use, modification, and redistribution of jmake++ (“the Software”) and any associated mods.
 
 ---
 
 ## **Section 1: Software Itself**
 
-**You may:**
+subsection 1: the do's
 
 1.  Modify your own copy of the Software.
     
@@ -15,7 +15,7 @@ This license governs the use, modification, and redistribution of jmakepp (“th
 3.  View, study, or reverse-engineer the source code using any means (Google, AI, etc.).
     
 
-**You may NOT:**
+subsection 2: the don'ts
 
 1.  Republish the Software without giving credit.
     
@@ -28,7 +28,7 @@ This license governs the use, modification, and redistribution of jmakepp (“th
 
 ## **Section 2: Mods** *(applies only if your project supports mods)*
 
-**You may:**
+subsection 1: the do's
 
 1.  Create your own mods.
     
@@ -37,7 +37,7 @@ This license governs the use, modification, and redistribution of jmakepp (“th
 3.  Publish modified versions of built-in mods with proper credit to the original author.
     
 
-**You may NOT:**
+subsection 2: the don'ts
 
 1.  Resell or distribute the Software bundled with your mod as the default configuration.
     
@@ -57,12 +57,12 @@ Past versions of the Software are exempt from most rules in this license. The fo
 
 ## **Section 4: Monetization**
 
-**You may:**
+subsection 1: the do's
 
 1.  Republish or sell a modified version of the Software with proper credit to the original author.
     
 
-**You may NOT:**
+subsection 2: the don'ts
 
 1.  Republish or sell the original, unmodified Software.
     
@@ -77,9 +77,9 @@ Past versions of the Software are exempt from most rules in this license. The fo
 
 The Software is provided **as-is**. After download, any damage or issues are your responsibility.
 
--   No warranties are issued.
+1.   No warranties are issued.
     
--   If the Software remains hosted on GitHub, Bitbucket, or GitLab, it may be redownloaded at no additional cost.
+2.   If the Software remains hosted on GitHub, Bitbucket, or GitLab, it may be redownloaded at no additional cost.
 
 
 
