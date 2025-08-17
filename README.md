@@ -187,4 +187,4 @@ Made by [replit-user](https://github.com/replit-user)
 
 ## 📄 License
 
-MIT License — free to use, modify, and distribute.
+Responsible Sharing License do most things freely and give credit if republishing
