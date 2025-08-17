@@ -1,0 +1,100 @@
+# Responsible Sharing License v1.0
+
+This license governs the use, modification, and redistribution of \[Your Project\] (“the Software”) and any associated mods.
+
+---
+
+## **Section 1: Software Itself**
+
+**You may:**
+
+1.  Modify your own copy of the Software.
+    
+2.  Republish your modified Software to GitHub, Bitbucket, or GitLab with proper credit to the original author.
+    
+3.  View, study, or reverse-engineer the source code using any means (Google, AI, etc.).
+    
+
+**You may NOT:**
+
+1.  Republish the Software without giving credit.
+    
+2.  Republish a malicious or harmful version of the Software.
+    
+3.  Republish the Software anywhere other than GitHub, Bitbucket, or GitLab, **except** if the modified version is already published on one of these platforms.
+    
+
+---
+
+## **Section 2: Mods** *(applies only if your project supports mods)*
+
+**You may:**
+
+1.  Create your own mods.
+    
+2.  Sell or publish your mods freely.
+    
+3.  Publish modified versions of built-in mods with proper credit to the original author.
+    
+
+**You may NOT:**
+
+1.  Resell or distribute the Software bundled with your mod as the default configuration.
+    
+
+---
+
+## **Section 3: Past Versions**
+
+Past versions of the Software are exempt from most rules in this license. The following still applies:
+
+1.  You may NOT publish or sell a malicious version of a past release.
+    
+2.  You must give proper credit to the original author when publishing or selling past versions.
+    
+
+---
+
+## **Section 4: Monetization**
+
+**You may:**
+
+1.  Republish or sell a modified version of the Software with proper credit to the original author.
+    
+
+**You may NOT:**
+
+1.  Republish or sell the original, unmodified Software.
+    
+2.  Publish a malicious version of the Software.
+    
+
+> This license **does not entitle the original author to any revenue** from modified versions, third-party merchandise, or any other third-party products derived from the Software.
+
+---
+
+## **Section 5: Warranties**
+
+The Software is provided **as-is**. After download, any damage or issues are your responsibility.
+
+-   No warranties are issued.
+    
+-   If the Software remains hosted on GitHub, Bitbucket, or GitLab, it may be redownloaded at no additional cost.
+
+
+
+The term “malicious” is ambiguous. For this license, Software is considered malicious if it meets any one of the following criteria, regardless of intent:
+
+1. It actively tries to harm, delete, or modify data, or compromise data integrity.
+2. It actively tries to modify its own code or the code of other programs on disk.
+3. It compromises system or application security.
+4. It is flagged by default antivirus tools in Windows, Ubuntu Linux, or Google Drive.
+5. Any action is taken without the user’s knowledge or permission.
+
+Only one of these points needs to be met for the Software to be considered malicious.
+
+Examples of malicious software include, but are not limited to:
+- Wannacry ransomware
+- An assembly program intended to be loaded at a specific memory address but loaded elsewhere, attempting to access another program’s memory
+- An MP3 file edited to execute arbitrary code
+- A Python script that deletes all files in a directory
