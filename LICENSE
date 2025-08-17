@@ -98,3 +98,14 @@ Examples of malicious software include, but are not limited to:
 - An assembly program intended to be loaded at a specific memory address but loaded elsewhere, attempting to access another program’s memory
 - An MP3 file edited to execute arbitrary code
 - A Python script that deletes all files in a directory
+
+proper credit is another ambiguous term, for this license the minimums for proper credit will be defined as:
+
+1. in a readme at the bottom seperated from any big chunks of text and if it's at the very bottom then it is no more than 3 newlines down
+2. in a code comment seperated from other comments THIS MINIMUM ONLY APPLIES TO PROJECTS MEANT TO BE RUN WITH AN INTERPERETER
+3. a link to the original project at the top of the readme
+4. an easter egg weather it be a variable name WHICH ONLY APPLIES TO PROJECTS MEANT TO BE RUN WITH AN INTERPERETER or the name of a custom module used in the project some other acceptable examples include:
+a clear audible whisper in a music file saying the link, name, author name, or having the author's voice of the original project, for this whisper to be considered audible it must measure 45 decibles or more with the volume being 50 on over 75% of devices
+an empty file with the project name, author name, main file, or otherwise being the file name
+
+at least 2 acceptable credit methods must be present for the credit to be considered proficient
