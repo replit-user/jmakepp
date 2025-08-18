@@ -81,6 +81,16 @@ The Software is provided **as-is**. After download, any damage or issues are you
     
 2.   If the Software remains hosted on GitHub, Bitbucket, or GitLab, it may be redownloaded at no additional cost.
 
+## section 6: what this license covers
+subsection 1: code
+as established this license is able to cover code compiled or otherwise but a requirement for being covered by the responsible sharing license is being
+a. open source
+b. on a site dedicated to open source projects eg github or gitlab
+subsection 2: data
+any applicable digital data may be covered, when I say applicable it culd be a jar file which isn't compiled but not interpereted as long as it is related to code, 
+and yes this could mean your game state for a python buisness simulation can be covered under the responsible sharing license
+subsection 3: non-code-non data items
+any asset that is not code and not data may not be covered under this license digital or otherwise.
 
 
 The term “malicious” is ambiguous. For this license, Software is considered malicious if it meets any one of the following criteria, regardless of intent:
@@ -104,8 +114,9 @@ proper credit is another ambiguous term, for this license the minimums for prope
 1. in a readme at the bottom seperated from any big chunks of text and if it's at the very bottom then it is no more than 3 newlines down
 2. in a code comment seperated from other comments THIS MINIMUM ONLY APPLIES TO PROJECTS MEANT TO BE RUN WITH AN INTERPERETER
 3. a link to the original project at the top of the readme
-4. an easter egg weather it be a variable name WHICH ONLY APPLIES TO PROJECTS MEANT TO BE RUN WITH AN INTERPERETER or the name of a custom module used in the project some other acceptable examples include:
-a clear audible whisper in a music file saying the link, name, author name, or having the author's voice of the original project, for this whisper to be considered audible it must measure 45 decibles or more with the volume being 50 on over 75% of devices
-an empty file with the project name, author name, main file, or otherwise being the file name
-
+4. a dedicated file containing the link to the original projects source code
+5. in a credits section of the README
+6. the source code of a project inside of an 'original' folder with an added comment at the very top of the source code
+7. a folder with the authors name or alias which can be used or unused
+8. the authors alias or name being in the title of the project
 at least 2 acceptable credit methods must be present for the credit to be considered proficient
