@@ -97,7 +97,7 @@ if ($gitInstalled) {
 try {
     $jmakeppCmd = Get-Command jmakepp.exe -ErrorAction Stop
     Write-Host "🎉 jmakepp is available at $($jmakeppCmd.Source)" -ForegroundColor Green
-    Write-Host "Try it with: jmakepp version, should output 1.7.4"
+    Write-Host "Try it with: jmakepp version, should output 1.8.0"
 } catch {
     Write-Warning "⚠️ jmakepp not found in PATH. You may need to restart the terminal or run it with full path."
 }

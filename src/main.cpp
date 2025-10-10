@@ -12,7 +12,7 @@
 namespace fs = std::filesystem;
 
 using json = nlohmann::json;
-std::string version = "1.7.4";
+std::string version = "1.8.0";
 // Utility to run a system command and print it
 int run_cmd(const std::string& cmd) {
     std::cout << "🚧 Running: " << cmd << "\n";
@@ -174,8 +174,8 @@ void install_headers(const std::string& from_path) {
     // Handle single file
     if (fs::is_regular_file(source)) {
         if (source.extension() == ".h" || source.extension() == ".hpp") {
-            fs::copy_file(source, 
-                          fs::path("include") / source.filename(), 
+            fs::copy_file(source,
+                          fs::path("include") / source.filename(),
                           fs::copy_options::overwrite_existing);
             std::cout << "✅ Installed header: " << source.filename() << "\n";
         } else {
@@ -186,13 +186,13 @@ void install_headers(const std::string& from_path) {
 
     // Handle directory
     for (auto& entry : fs::recursive_directory_iterator(source)) {
-        if (entry.is_regular_file() && 
+        if (entry.is_regular_file() &&
             (entry.path().extension() == ".h" || entry.path().extension() == ".hpp")) {
-            
+
             // Compute relative path
             auto rel_path = fs::relative(entry.path().parent_path(), source);
             fs::path dest = fs::path("include") / rel_path / entry.path().filename();
-            
+
             fs::create_directories(dest.parent_path());
             fs::copy_file(entry.path(), dest, fs::copy_options::overwrite_existing);
         }
@@ -201,14 +201,79 @@ void install_headers(const std::string& from_path) {
     std::cout << "✅ Headers installed to ./include\n";
 }
 
+// Update the tool to the latest version from GitHub
+void update(const std::string& exe_path) {
+    // Determine platform
+    bool is_windows = exe_path.find(".exe") != std::string::npos;
+    std::string platform = is_windows ? "windows" : "linux";
+    std::string asset_pattern = is_windows ? "windows.exe" : "linux";
+
+    // Download release JSON
+    std::string api_url = "https://api.github.com/repos/replit-user/jmakepp/releases/latest";
+    std::string temp_json = "temp_release.json";
+    std::string curl_cmd = "curl -s -o " + temp_json + " " + api_url;
+    if (run_cmd(curl_cmd) != 0) {
+        std::cerr << "❌ Failed to fetch release info\n";
+        return;
+    }
+
+    // Load JSON
+    std::ifstream file(temp_json);
+    if (!file) {
+        std::cerr << "❌ Failed to read release info\n";
+        fs::remove(temp_json);
+        return;
+    }
+    json release;
+    file >> release;
+    file.close();
+    fs::remove(temp_json);
+
+    // Get assets
+    auto assets = release["assets"];
+    std::string download_url;
+    for (auto& asset : assets) {
+        std::string name = asset["name"];
+        if (name.find(asset_pattern) != std::string::npos) {
+            download_url = asset["browser_download_url"];
+            break;
+        }
+    }
+
+    if (download_url.empty()) {
+        std::cerr << "❌ No suitable asset found for platform " << platform << "\n";
+        return;
+    }
+
+    // Download binary
+    std::string temp_binary = "temp_jmakepp";
+    if(is_windows){temp_binary += ".exe";}
+    std::string download_cmd = "curl -L -o " + temp_binary + " " + download_url;
+    if (run_cmd(download_cmd) != 0) {
+        std::cerr << "❌ Failed to download binary\n";
+        return;
+    }
+
+    // Replace executable
+    try {
+        fs::copy_file(temp_binary, exe_path, fs::copy_options::overwrite_existing);
+        fs::remove(temp_binary);
+        std::cout << "✅ Updated to latest version\n";
+    } catch (const std::exception& e) {
+        std::cerr << "❌ Failed to replace binary: " << e.what() << "\n";
+        fs::remove(temp_binary);
+    }
+}
+
 // Main CLI dispatcher
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        std::cout << "Usage: jmakepp [build|new|install|help|version|clean] [optional args]\n";
+        std::cout << "Usage: jmakepp [build|new|install|help|version|clean|update] [optional args]\n";
         return 1;
     }
 
     std::string cmd = argv[1];
+    std::string exe_path = argv[0];
 
     try {
         if (cmd == "build") {
@@ -234,6 +299,7 @@ int main(int argc, char* argv[]) {
                       << "  new <path>      - Creates new project\n"
                       << "  build <version> - Builds project and updates version\n"
                       << "  install <path>  - Installs headers from path\n"
+                      << "  update          - Updates the tool to the latest version\n"
                       << "  help            - Shows this message\n";
         } else if(cmd == "version") {
             std::cout << "Version: " << version << "\n";
@@ -246,6 +312,8 @@ int main(int argc, char* argv[]) {
             } else {
                 std::cout << "⚠️ Build directory does not exist\n";
             }
+        } else if (cmd == "update") {
+            update(exe_path);
         }
         else {
             std::cout << "❌ Unknown command: " << cmd << "\n";
