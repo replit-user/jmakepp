@@ -6,8 +6,12 @@
 #include <regex>
 #include <sstream>
 #include "../include/nlohmann/json.hpp" // JSON library
-#include "../include/dauser/filio.h" // simpler file I/O
-
+#include "../include/dauser/filio.hpp" // simpler file I/O
+#ifdef _WIN32
+    bool is_windows = true;
+#else
+    bool is_windows = false;
+#endif
 #include <filesystem>
 namespace fs = std::filesystem;
 
@@ -202,57 +206,36 @@ void install_headers(const std::string& from_path) {
 }
 
 // Update the tool to the latest version from GitHub
-void update(const std::string& exe_path) {
-    // Determine platform
-    bool is_windows = exe_path.find(".exe") != std::string::npos;
+// Update the tool to the latest version from GitHub
+void update() {
+    std::string url = "https://github.com/replit-user/jmakepp.git";
+    std::string dest = "./TMP";
+    std::string cmd = "git clone " + url + " " + dest;
 
-    // Clone the repository
-    std::string repo_url = "https://github.com/replit-user/jmakepp.git";
-    std::string temp_dir = "temp_update";
-    std::string clone_cmd = "git clone " + repo_url + " " + temp_dir;
-    if (run_cmd(clone_cmd) != 0) {
-        std::cerr << "❌ Failed to clone repository\n";
+    // Use std::filesystem directly — guaranteed to return a string-compatible path
+    std::string current_dir = fs::absolute("./").u8string();
+
+    if (run_cmd(cmd) != 0) {
+        std::cerr << "❌ Failed to clone repository.\n";
         return;
     }
 
-    // Determine binary path in cloned repo
-    std::string binary_path = temp_dir + "/bin/jmakepp";
     if (is_windows) {
-        binary_path += ".exe";
+        std::string windows_cmd =
+            "powershell -ExecutionPolicy ByPass -File \"" + dest +
+            "/installers/installer.ps1\" \"" + current_dir + "\"";
+        run_cmd(windows_cmd);
+        run_cmd("rmdir /s /q TMP"); // clean up for Windows
+    } else {
+        run_cmd("chmod +x ./TMP/installers/installer.sh");
+        run_cmd("./TMP/installers/installer.sh");
+        run_cmd("rm -rf ./TMP");
     }
 
-    // Check if binary exists
-    if (!fs::exists(binary_path)) {
-        std::cerr << "❌ Binary not found in cloned repository\n";
-        fs::remove_all(temp_dir);
-        return;
-    }
-
-    // Replace executable
-    try {
-        // Read new binary
-        std::ifstream new_file(binary_path, std::ios::binary);
-        if (!new_file) {
-            throw std::runtime_error("Failed to open new binary");
-        }
-        std::vector<char> buffer(std::istreambuf_iterator<char>(new_file), {});
-        new_file.close();
-
-        // Write to old file
-        std::ofstream old_file(exe_path, std::ios::binary | std::ios::trunc);
-        if (!old_file) {
-            throw std::runtime_error("Failed to open old binary for writing");
-        }
-        old_file.write(buffer.data(), buffer.size());
-        old_file.close();
-
-        fs::remove_all(temp_dir);
-        std::cout << "✅ Updated to latest version\n";
-    } catch (const std::exception& e) {
-        std::cerr << "❌ Failed to update binary: " << e.what() << "\n";
-        fs::remove_all(temp_dir);
-    }
+    std::cout << "✅ Update completed successfully.\n";
 }
+
+
 
 // Main CLI dispatcher
 int main(int argc, char* argv[]) {
@@ -302,7 +285,7 @@ int main(int argc, char* argv[]) {
                 std::cout << "⚠️ Build directory does not exist\n";
             }
         } else if (cmd == "update") {
-            update(exe_path);
+            update();
         }
         else {
             std::cout << "❌ Unknown command: " << cmd << "\n";
