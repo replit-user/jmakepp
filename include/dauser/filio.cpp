@@ -1,4 +1,4 @@
-#include "filio.hpp"
+#include "filio.h"
 #include <fstream>
 
 namespace filio {
@@ -37,7 +37,7 @@ namespace extra {
         return abs;
     }
 
-} // namespace detail
+} // namespace extra
 
 void write(const std::filesystem::path& filename, const std::string& text) {
     std::ofstream stream(filename, std::ios::binary);

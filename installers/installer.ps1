@@ -42,10 +42,10 @@ try {
     }
 
     $possiblePaths = @(
-        "$tempDir\jmake.exe",
-        "$tempDir\jmake-main\jmake.exe",
-        "$tempDir\jmakepp\jmake.exe",
-        "$tempDir\bin\jmake.exe"
+        "$tempDir\bin\jmakepp.exe",
+        "$tempDir\jmakepp.exe",
+        "$tempDir\jmake-main\bin\jmakepp.exe",
+        "$tempDir\jmakepp\bin\jmakepp.exe"
     )
 
     $jmakeppPath = $null
@@ -64,7 +64,7 @@ try {
         New-Item -ItemType Directory -Path $Destination -Force | Out-Null
     }
 
-    $finalPath = Join-Path $Destination "jmake.exe"
+    $finalPath = Join-Path $Destination "jmakepp.exe"
     Copy-Item -Path $jmakeppPath -Destination $finalPath -Force
 
     Write-Host "✅ jmakepp.exe installed to $finalPath" -ForegroundColor Green
@@ -97,7 +97,7 @@ if ($gitInstalled) {
 try {
     $jmakeppCmd = Get-Command jmakepp.exe -ErrorAction Stop
     Write-Host "🎉 jmakepp is available at $($jmakeppCmd.Source)" -ForegroundColor Green
-    Write-Host "Try it with: jmake version, should output 1.7.3"
+    Write-Host "Try it with: jmakepp version, should output 1.7.4"
 } catch {
     Write-Warning "⚠️ jmakepp not found in PATH. You may need to restart the terminal or run it with full path."
 }

@@ -5,7 +5,7 @@
         "./include/nlohmann",
         "./include/dauser"
     ],
-    "name": "jmake",
+    "name": "jmakepp",
     "platforms": [
         "windows",
         "linux"

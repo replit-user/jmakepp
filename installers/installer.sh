@@ -20,15 +20,15 @@ git clone "$REPO" ./clone
 cd clone
 
 # Verify binary exists
-if [ ! -f ./bin/jmake ]; then
+if [ ! -f ./bin/jmakepp ]; then
     echo "❌ Error: jmakepp binary not found in repo!"
     exit 1
 fi
-chmod +x ./bin/jmake
+chmod +x ./bin/jmakepp
 # Move binary
 sudo mv ./bin/jmakepp /usr/bin/jmakepp
 echo "✅ jmakepp installed to /usr/bin/jmakepp"
-echo "Try it with: jmake version, should output 1.7.3"
+echo "Try it with: jmakepp version, should output 1.7.4"
 
 cd ..
 rm -rf ./clone

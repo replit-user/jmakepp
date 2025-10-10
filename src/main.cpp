@@ -12,17 +12,17 @@
 namespace fs = std::filesystem;
 
 using json = nlohmann::json;
-std::string version = "1.7.3";
+std::string version = "1.7.4";
 // Utility to run a system command and print it
 int run_cmd(const std::string& cmd) {
     std::cout << "🚧 Running: " << cmd << "\n";
     int result = std::system(cmd.c_str());
-if(result == 0){
-    return 0;
-}else{
-    std::cerr << cmd << "failed with code " << result;
-    return 1;
-}
+    if (result == 0) {
+        return 0;
+    } else {
+        std::cerr << cmd << " failed with code " << result << "\n";
+        return 1;
+    }
 }
 
 // Load JSON config from file
@@ -85,6 +85,7 @@ void build(std::string new_version) {
 
     fs::create_directories(fs::path(buildpath));
     std::vector<std::string> platforms = config.value("platforms", std::vector<std::string>{"linux"});
+    bool all_success = true;
 
     for (const std::string& platform : platforms) {
         std::string compiler, extension;
@@ -118,15 +119,20 @@ void build(std::string new_version) {
         int result = run_cmd(command);
         if (result != 0) {
             std::cout << "❌ Build failed for platform: " << platform << "\n";
+            all_success = false;
         } else {
             std::cout << "✅ Built for " << platform << " -> " << outname << "\n";
         }
     }
 
-    config["version"] = new_version;
-    std::ofstream out("project.json");
-    out << config.dump(4);
-    std::cout << "🔄 Updated version to: " << new_version << "\n";
+    if (all_success) {
+        config["version"] = new_version;
+        std::ofstream out("project.json");
+        out << config.dump(4);
+        std::cout << "🔄 Updated version to: " << new_version << "\n";
+    } else {
+        std::cout << "⚠️ Version not updated due to build failures\n";
+    }
 }
 
 
@@ -149,7 +155,7 @@ void create_new_project(const std::string& path) {
     proj.close();
 
     std::ofstream maincpp(path + "/src/main.cpp");
-    maincpp << "#include <iostream>\nint main() {\n    std::cout << \"Hello from " << fs::absolute(path) << "!\\n\";\n    return 0;\n}\n";
+    maincpp << "#include <iostream>\nint main() {\n    std::cout << \"Hello from " << fs::absolute(fs::path(path)) << "!\\n\";\n    return 0;\n}\n";
     maincpp.close();
 
     std::cout << "✅ Project created at: " << path << "\n";
@@ -198,7 +204,7 @@ void install_headers(const std::string& from_path) {
 // Main CLI dispatcher
 int main(int argc, char* argv[]) {
     if (argc < 2) {
-        std::cout << "Usage: sbuild [build|new|install|help] [optional args]\n";
+        std::cout << "Usage: jmakepp [build|new|install|help|version|clean] [optional args]\n";
         return 1;
     }
 
@@ -207,19 +213,19 @@ int main(int argc, char* argv[]) {
     try {
         if (cmd == "build") {
             if (argc < 3) {
-                std::cout << "Usage: sbuild build <new_version>\n";
+                std::cout << "Usage: jmakepp build <new_version>\n";
                 return 1;
             }
             build(argv[2]);
         } else if (cmd == "new") {
             if (argc < 3) {
-                std::cout << "Usage: sbuild new <path>\n";
+                std::cout << "Usage: jmakepp new <path>\n";
                 return 1;
             }
             create_new_project(argv[2]);
         } else if (cmd == "install") {
             if (argc < 3) {
-                std::cout << "Usage: sbuild install <path>\n";
+                std::cout << "Usage: jmakepp install <path>\n";
                 return 1;
             }
             install_headers(argv[2]);
@@ -232,9 +238,14 @@ int main(int argc, char* argv[]) {
         } else if(cmd == "version") {
             std::cout << "Version: " << version << "\n";
             return 0;
-        }else if(cmd == "clean"){
-            fs::remove_all(load_project_config()["buildpath"]);
-            std::cout << "✅ Cleaned build directory\n";
+        } else if (cmd == "clean") {
+            std::string buildpath = load_project_config()["buildpath"];
+            if (fs::exists(buildpath)) {
+                fs::remove_all(buildpath);
+                std::cout << "✅ Cleaned build directory\n";
+            } else {
+                std::cout << "⚠️ Build directory does not exist\n";
+            }
         }
         else {
             std::cout << "❌ Unknown command: " << cmd << "\n";

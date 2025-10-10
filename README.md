@@ -2,7 +2,7 @@
 
 `jmake++` is a lightweight, zero-dependency build system for C++ projects, written in C++. It replaces complex systems like Make and CMake for small to mid-size projects with a single JSON configuration file and intuitive CLI.
 
-**Version:** `1.7.3`  
+**Version:** `1.7.4`  
 **Platforms:** Windows ✅ & Linux ✅  
 **Dependencies:** `g++`, `nlohmann/json`, and optionally `filio.h` (bundled or install separately)
 
@@ -37,13 +37,13 @@
 ./installer.ps1
 ```
 
-These scripts copy the `jmake` binary to a directory in your `PATH`.
+These scripts copy the `jmakepp` binary to a directory in your `PATH`.
 
 ###### or if you have an older version of jmake++:
 ```bash
 git clone https://github.com/replit-user/jmakepp ./jmakepp
 cd jmakepp
-jmake build
+jmakepp build
 ---
 ```
 however this will only work if the version of jmake++ you have supports the flags key in project.json
@@ -51,12 +51,12 @@ however this will only work if the version of jmake++ you have supports the flag
 ## 🔧 Commands
 
 ```bash
-jmake new <path>      # Create a new project in the given directory
-jmake build <version> # Build the project and update version in project.json
-jmake install <path>  # Install .h/.hpp files to ./include
-jmake clean           # Remove the ./build directory
-jmake version         # Show jmake++ version
-jmake help            # Show available commands
+jmakepp new <path>      # Create a new project in the given directory
+jmakepp build <version> # Build the project and update version in project.json
+jmakepp install <path>  # Install .h/.hpp files to ./include
+jmakepp clean           # Remove the ./build directory
+jmakepp version         # Show jmake++ version
+jmakepp help            # Show available commands
 ```
 
 ---
@@ -64,9 +64,9 @@ jmake help            # Show available commands
 ## 🛠 Example Workflow
 
 ```bash
-jmake new myproject
+jmakepp new myproject
 cd myproject
-jmake build 1.1.0
+jmakepp build 1.1.0
 ./build/example-1.1.0
 ```
 
@@ -130,8 +130,8 @@ myproject/
 Install individual headers or full directories:
 
 ```bash
-jmake install path/to/header.hpp
-jmake install include/
+jmakepp install path/to/header.hpp
+jmakepp install include/
 ```
 
 Copies valid `.h` or `.hpp` files to your project's `./include/`.
@@ -141,7 +141,7 @@ Copies valid `.h` or `.hpp` files to your project's `./include/`.
 ## 🧼 Clean Build Artifacts
 
 ```bash
-jmake clean
+jmakepp clean
 ```
 
 Removes the build directory completely.
