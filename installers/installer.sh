@@ -28,7 +28,7 @@ chmod +x ./bin/jmakepp
 # Move binary
 sudo mv ./bin/jmakepp /usr/bin/jmakepp
 echo "✅ jmakepp installed to /usr/bin/jmakepp"
-echo "Try it with: jmakepp version, should output 1.8.0"
+echo "Try it with: jmakepp version, should output 1.8.1"
 
 cd ..
 rm -rf ./clone
