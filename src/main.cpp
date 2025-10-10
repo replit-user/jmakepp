@@ -230,12 +230,26 @@ void update(const std::string& exe_path) {
 
     // Replace executable
     try {
-        fs::remove(exe_path);
-        fs::copy_file(binary_path, exe_path, fs::copy_options::overwrite_existing);
+        // Read new binary
+        std::ifstream new_file(binary_path, std::ios::binary);
+        if (!new_file) {
+            throw std::runtime_error("Failed to open new binary");
+        }
+        std::vector<char> buffer(std::istreambuf_iterator<char>(new_file), {});
+        new_file.close();
+
+        // Write to old file
+        std::ofstream old_file(exe_path, std::ios::binary | std::ios::trunc);
+        if (!old_file) {
+            throw std::runtime_error("Failed to open old binary for writing");
+        }
+        old_file.write(buffer.data(), buffer.size());
+        old_file.close();
+
         fs::remove_all(temp_dir);
         std::cout << "✅ Updated to latest version\n";
     } catch (const std::exception& e) {
-        std::cerr << "❌ Failed to replace binary: " << e.what() << "\n";
+        std::cerr << "❌ Failed to update binary: " << e.what() << "\n";
         fs::remove_all(temp_dir);
     }
 }
