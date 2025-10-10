@@ -205,63 +205,37 @@ void install_headers(const std::string& from_path) {
 void update(const std::string& exe_path) {
     // Determine platform
     bool is_windows = exe_path.find(".exe") != std::string::npos;
-    std::string platform = is_windows ? "windows" : "linux";
-    std::string asset_pattern = is_windows ? "windows.exe" : "linux";
 
-    // Download release JSON
-    std::string api_url = "https://api.github.com/repos/replit-user/jmakepp/releases/latest";
-    std::string temp_json = "temp_release.json";
-    std::string curl_cmd = "curl -s -o " + temp_json + " " + api_url;
-    if (run_cmd(curl_cmd) != 0) {
-        std::cerr << "❌ Failed to fetch release info\n";
+    // Clone the repository
+    std::string repo_url = "https://github.com/replit-user/jmakepp.git";
+    std::string temp_dir = "temp_update";
+    std::string clone_cmd = "git clone " + repo_url + " " + temp_dir;
+    if (run_cmd(clone_cmd) != 0) {
+        std::cerr << "❌ Failed to clone repository\n";
         return;
     }
 
-    // Load JSON
-    std::ifstream file(temp_json);
-    if (!file) {
-        std::cerr << "❌ Failed to read release info\n";
-        fs::remove(temp_json);
-        return;
-    }
-    json release;
-    file >> release;
-    file.close();
-    fs::remove(temp_json);
-
-    // Get assets
-    auto assets = release["assets"];
-    std::string download_url;
-    for (auto& asset : assets) {
-        std::string name = asset["name"];
-        if (name.find(asset_pattern) != std::string::npos) {
-            download_url = asset["browser_download_url"];
-            break;
-        }
+    // Determine binary path in cloned repo
+    std::string binary_path = temp_dir + "/bin/jmakepp";
+    if (is_windows) {
+        binary_path += ".exe";
     }
 
-    if (download_url.empty()) {
-        std::cerr << "❌ No suitable asset found for platform " << platform << "\n";
-        return;
-    }
-
-    // Download binary
-    std::string temp_binary = "temp_jmakepp";
-    if(is_windows){temp_binary += ".exe";}
-    std::string download_cmd = "curl -L -o " + temp_binary + " " + download_url;
-    if (run_cmd(download_cmd) != 0) {
-        std::cerr << "❌ Failed to download binary\n";
+    // Check if binary exists
+    if (!fs::exists(binary_path)) {
+        std::cerr << "❌ Binary not found in cloned repository\n";
+        fs::remove_all(temp_dir);
         return;
     }
 
     // Replace executable
     try {
-        fs::copy_file(temp_binary, exe_path, fs::copy_options::overwrite_existing);
-        fs::remove(temp_binary);
+        fs::copy_file(binary_path, exe_path, fs::copy_options::overwrite_existing);
+        fs::remove_all(temp_dir);
         std::cout << "✅ Updated to latest version\n";
     } catch (const std::exception& e) {
         std::cerr << "❌ Failed to replace binary: " << e.what() << "\n";
-        fs::remove(temp_binary);
+        fs::remove_all(temp_dir);
     }
 }
 

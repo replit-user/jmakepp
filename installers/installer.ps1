@@ -33,7 +33,7 @@ if (-not (Get-Command wsl -ErrorAction SilentlyContinue)) {
 
 # Clone repo
 $repoUrl = "https://github.com/replit-user/jmakepp"
-$tempDir = Join-Path -Path $env:TEMP -ChildPath "jmakepp-clone-$(Get-Date -Format 'yyyyMMddHHmmss')"
+$tempDir = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), "jmakepp-clone-$(Get-Date -Format 'yyyyMMddHHmmss')")
 
 try {
     git clone $repoUrl "`"$tempDir`""
