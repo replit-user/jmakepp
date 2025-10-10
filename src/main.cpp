@@ -230,6 +230,7 @@ void update(const std::string& exe_path) {
 
     // Replace executable
     try {
+        fs::remove(exe_path);
         fs::copy_file(binary_path, exe_path, fs::copy_options::overwrite_existing);
         fs::remove_all(temp_dir);
         std::cout << "✅ Updated to latest version\n";
