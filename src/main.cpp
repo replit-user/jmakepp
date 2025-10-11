@@ -16,7 +16,7 @@
 namespace fs = std::filesystem;
 
 using json = nlohmann::json;
-std::string version = "1.8.1";
+std::string version = "1.8.2";
 // Utility to run a system command and print it
 int run_cmd(const std::string& cmd) {
     std::cout << "🚧 Running: " << cmd << "\n";
@@ -105,7 +105,7 @@ void build(std::string new_version) {
         }
 
         std::string outname = buildpath + name + "-" + config_version + "-" + platform + extension;
-        std::string command = compiler + " -o \"" + outname + "\" \"" + src + "\"";
+        std::string command = compiler + " -o \"" + outname + "\" \"" + src + "\" \"./include/dauser/filio.cpp\"";
 
         for (const auto& flag : flags) {
             command += " " + flag;
@@ -206,31 +206,32 @@ void install_headers(const std::string& from_path) {
 }
 
 // Update the tool to the latest version from GitHub
-// Update the tool to the latest version from GitHub
-void update() {
+void update(std::string final_dest) {
     std::string url = "https://github.com/replit-user/jmakepp.git";
     std::string dest = "./TMP";
     std::string cmd = "git clone " + url + " " + dest;
-
-    // Use std::filesystem directly — guaranteed to return a string-compatible path
-    std::string current_dir = fs::absolute("./").u8string();
 
     if (run_cmd(cmd) != 0) {
         std::cerr << "❌ Failed to clone repository.\n";
         return;
     }
 
-    if (is_windows) {
-        std::string windows_cmd =
-            "powershell -ExecutionPolicy ByPass -File \"" + dest +
-            "/installers/installer.ps1\" \"" + current_dir + "\"";
-        run_cmd(windows_cmd);
-        run_cmd("rmdir /s /q TMP"); // clean up for Windows
-    } else {
-        run_cmd("chmod +x ./TMP/installers/installer.sh");
-        run_cmd("./TMP/installers/installer.sh");
-        run_cmd("rm -rf ./TMP");
+    std::string binary_name = is_windows ? "jmakepp.exe" : "jmakepp";
+    std::string src = dest + "/bin/" + binary_name;
+
+    if (!fs::exists(src)) {
+        std::cerr << "❌ Binary not found in repository.\n";
+        run_cmd(is_windows ? "rmdir /s /q TMP" : "rm -rf ./TMP");
+        return;
     }
+
+    fs::copy_file(src, final_dest, fs::copy_options::overwrite_existing);
+
+    if (!is_windows) {
+        run_cmd("chmod +x \"" + final_dest + "\"");
+    }
+
+    run_cmd(is_windows ? "rmdir /s /q TMP" : "rm -rf ./TMP");
 
     std::cout << "✅ Update completed successfully.\n";
 }
@@ -285,7 +286,7 @@ int main(int argc, char* argv[]) {
                 std::cout << "⚠️ Build directory does not exist\n";
             }
         } else if (cmd == "update") {
-            update();
+            update(filio::extra::script_path().string());
         }
         else {
             std::cout << "❌ Unknown command: " << cmd << "\n";
