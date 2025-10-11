@@ -6,7 +6,7 @@
 #include <regex>
 #include <sstream>
 #include "../include/nlohmann/json.hpp" // JSON library
-#include "../include/dauser/filio.hpp" // simpler file I/O
+#include "./filio.hpp" // simpler file I/O
 #ifdef _WIN32
     bool is_windows = true;
 #else
@@ -51,10 +51,14 @@ std::vector<std::string> expand_includes(const std::vector<std::string>& raw) {
             if (!base.empty() && base.back() == '/') {
                 base.pop_back();
             }
-            for (auto& entry : fs::directory_iterator(base)) {
-                if (fs::is_directory(entry)) {
-                    includes.push_back("-I" + entry.path().string());
+            try {
+                for (auto& entry : fs::directory_iterator(base)) {
+                    if (fs::is_directory(entry)) {
+                        includes.push_back("-I" + entry.path().string());
+                    }
                 }
+            } catch (const fs::filesystem_error& e) {
+                std::cerr << "⚠️ Warning: failed to iterate directory '" << base << "': " << e.what() << "\n";
             }
         } else {
             if (fs::is_directory(path)) {
@@ -108,7 +112,7 @@ void build(std::string new_version) {
         std::string command = compiler + " -o \"" + outname + "\" \"" + src + "\" \"./include/dauser/filio.cpp\"";
 
         for (const auto& flag : flags) {
-            command += " " + flag;
+            command += " \"" + flag + "\"";
         }
 
         if (type == "shared") {
@@ -117,7 +121,7 @@ void build(std::string new_version) {
 
         std::vector<std::string> includes = expand_includes(includepaths);
         for (const auto& inc : includes) {
-            command += " " + inc;
+            command += " \"" + inc + "\"";
         }
 
         int result = run_cmd(command);
@@ -158,8 +162,15 @@ void create_new_project(const std::string& path) {
 })";
     proj.close();
 
+    std::string abs_path = fs::absolute(fs::path(path)).string();
+    // Escape quotes in path
+    size_t pos = 0;
+    while ((pos = abs_path.find('"', pos)) != std::string::npos) {
+        abs_path.replace(pos, 1, "\\\"");
+        pos += 2;
+    }
     std::ofstream maincpp(path + "/src/main.cpp");
-    maincpp << "#include <iostream>\nint main() {\n    std::cout << \"Hello from " << fs::absolute(fs::path(path)) << "!\\n\";\n    return 0;\n}\n";
+    maincpp << "#include <iostream>\nint main() {\n    std::cout << \"Hello from " << abs_path << "!\\n\";\n    return 0;\n}\n";
     maincpp.close();
 
     std::cout << "✅ Project created at: " << path << "\n";
@@ -225,7 +236,13 @@ void update(std::string final_dest) {
         return;
     }
 
-    fs::copy_file(src, final_dest, fs::copy_options::overwrite_existing);
+    try {
+        fs::copy_file(src, final_dest, fs::copy_options::overwrite_existing);
+    } catch (const fs::filesystem_error& e) {
+        std::cerr << "❌ Failed to update binary: " << e.what() << "\n";
+        run_cmd(is_windows ? "rmdir /s /q TMP" : "rm -rf ./TMP");
+        return;
+    }
 
     if (!is_windows) {
         run_cmd("chmod +x \"" + final_dest + "\"");

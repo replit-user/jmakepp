@@ -13,7 +13,10 @@ namespace extra {
     std::filesystem::path script_path() {
 #ifdef _WIN32
         char path[MAX_PATH];
-        GetModuleFileNameA(nullptr, path, MAX_PATH);
+        DWORD length = GetModuleFileNameA(nullptr, path, MAX_PATH);
+        if (length == 0 || length >= MAX_PATH) {
+            throw FileError("Failed to get module file name");
+        }
         return std::filesystem::path(path);
 #else
         return std::filesystem::read_symlink("/proc/self/exe");

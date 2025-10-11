@@ -14,15 +14,25 @@ $gitInstalled = $false
 $gitWasPresent = $null -ne (Get-Command git -ErrorAction SilentlyContinue)
 
 if (-not $gitWasPresent) {
-    Write-Host "📦 Installing Git via winget..."
-    winget install --id Git.Git -e --accept-package-agreements --accept-source-agreements
-    $gitInstalled = $true
+    if (Get-Command winget -ErrorAction SilentlyContinue) {
+        Write-Host "📦 Installing Git via winget..."
+        winget install --id Git.Git -e --accept-package-agreements --accept-source-agreements
+        $gitInstalled = $true
+    } else {
+        Write-Host "❌ winget not found. Please install Git manually from https://git-scm.com/"
+        exit 1
+    }
 }
 
 # Ensure g++ is available
 if (-not (Get-Command g++ -ErrorAction SilentlyContinue)) {
-    Write-Host "📦 Installing g++ via winget..."
-    winget install --id "GnuWin32.Gcc" -e --accept-package-agreements --accept-source-agreements
+    if (Get-Command winget -ErrorAction SilentlyContinue) {
+        Write-Host "📦 Installing g++ via winget..."
+        winget install --id "GnuWin32.Gcc" -e --accept-package-agreements --accept-source-agreements
+    } else {
+        Write-Host "❌ winget not found. Please install MinGW or GCC manually."
+        exit 1
+    }
 }
 
 # Ensure WSL for cross-compiling to Linux

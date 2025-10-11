@@ -2,15 +2,14 @@
     "buildpath": "./bin/",
     "flags": "-std=c++17 -O2 -static-libgcc -static-libstdc++",
     "includepaths": [
-        "./include/nlohmann",
-        "./include/dauser"
+        "./include/nlohmann"
     ],
     "name": "jmakepp",
     "platforms": [
         "windows",
         "linux"
     ],
-    "srcpath": "./src/*",
+    "srcpath": "./src/main.cpp",
     "type": "elf",
     "version": "1.8.2"
 }
