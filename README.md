@@ -2,7 +2,7 @@
 
 `jmake++` is a lightweight, zero-dependency build system for C++ projects, written in C++. It replaces complex systems like Make and CMake for small to mid-size projects with a single JSON configuration file and intuitive CLI.
 
-**Version:** `1.8.2`
+**Version:** `1.8.3`
 **Platforms:** Windows ✅ & Linux ✅  
 **Dependencies:** `g++`, `nlohmann/json`, and optionally `filio.h` (bundled or install separately)
 
@@ -27,17 +27,13 @@
 ### 📥 Installation
 
 **On Linux:**
-```bash
-./installer.sh
-```
+double click the .deb file
 
-**On Windows (PowerShell):**
 
-```powershell
-./installer.ps1
-```
+**On windows**
+double click the .MSI file
 
-These scripts copy the `jmakepp` binary to a directory in your `PATH`.
+THE INSTALLER SCRIPTS FROM NOW ON WILL BE OUTDATED PLEASE NOTE THIS BUT THEY SHOULD STILL WORK JUST WILL NO LONGER RECIVE UPDATES
 
 ###### or if you have an older version of jmake++:
 ```bash
@@ -46,7 +42,7 @@ cd jmakepp
 jmakepp build
 ---
 ```
-however this will only work if the version of jmake++ you have supports the flags key in project.json
+however this will only work if the version of jmake++ you have supports the flags key in project.json most newer versions should
 
 ## 🔧 Commands
 
@@ -57,6 +53,7 @@ jmakepp install <path>  # Install .h/.hpp files to ./include
 jmakepp clean           # Remove the ./build directory
 jmakepp version         # Show jmake++ version
 jmakepp help            # Show available commands
+jmakepp update          # update the script but for some reason doesn't work
 ```
 
 ---
@@ -112,7 +109,7 @@ You’ll see:
 |`platforms`|`list of strings, either windows or linux`|`the platofrms to compile with`|
 ---
 
-## 📁 Directory Layout (after `jmake++ new`)
+## 📁 Directory Layout (after `jmakepp new`)
 
 ```pgsql
 myproject/
