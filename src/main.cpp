@@ -16,7 +16,7 @@
 namespace fs = std::filesystem;
 
 using json = nlohmann::json;
-std::string version = "1.8.3";
+std::string version = "1.8.4";
 // Utility to run a system command and print it
 int run_cmd(const std::string& cmd) {
     std::cout << "🚧 Running: " << cmd << "\n";
@@ -109,7 +109,7 @@ void build(std::string new_version) {
         }
 
         std::string outname = buildpath + name + "-" + config_version + "-" + platform + extension;
-        std::string command = compiler + " -o \"" + outname + "\" \"" + src + "\" \"./include/dauser/filio.cpp\"";
+        std::string command = compiler + " -o \"" + outname + "\" \"" + src + "\"";
 
         for (const auto& flag : flags) {
             command += " \"" + flag + "\"";
