@@ -1,15 +1,18 @@
 {
     "buildpath": "./bin/",
-    "flags": "-std=c++17 -O2 -static-libgcc -static-libstdc++",
+    "c": false,
+    "flags": "-std=c++17 -O2 -static-libgcc -static-libstdc++ ./src/filio.cpp",
     "includepaths": [
-        "./include/*"
+        "./include/dauser",
+        "./include/nlohmann"
     ],
     "name": "jmakepp",
     "platforms": [
         "windows",
-        "linux"
+        "linux",
+        "macos"
     ],
     "srcpath": "./src/main.cpp",
     "type": "elf",
-    "version": "1.8.5"
+    "version": "1.8.6"
 }

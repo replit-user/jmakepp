@@ -9,14 +9,19 @@
 #include "./filio.hpp" // simpler file I/O
 #ifdef _WIN32
     bool is_windows = true;
+    bool is_macos = false;
+#elif __APPLE__
+    bool is_windows = false;
+    bool is_macos = true;
 #else
     bool is_windows = false;
+    bool is_macos = false;
 #endif
 #include <filesystem>
 namespace fs = std::filesystem;
 
 using json = nlohmann::json;
-std::string version = "1.8.4";
+std::string version = "1.8.6";
 // Utility to run a system command and print it
 int run_cmd(const std::string& cmd) {
     std::cout << "🚧 Running: " << cmd << "\n";
@@ -74,6 +79,7 @@ std::vector<std::string> expand_includes(const std::vector<std::string>& raw) {
 // Build project
 void build(std::string new_version) {
     json config = load_project_config();
+    bool c = config["c"];
     std::string name = config["name"];
     std::string buildpath = config["buildpath"];
     std::string src = config["srcpath"];
@@ -97,17 +103,23 @@ void build(std::string new_version) {
 
     for (const std::string& platform : platforms) {
         std::string compiler, extension;
+        
         if (platform == "linux") {
-            compiler = "g++";
+            compiler = c ? "gcc" : "g++";
             extension = "";
-        } else if (platform == "windows") {
-            compiler = "x86_64-w64-mingw32-g++";
+        }
+        else if (platform == "windows") {
+            compiler = c ? "x86_64-w64-mingw32-gcc" : "x86_64-w64-mingw32-g++";
             extension = ".exe";
-        } else {
+        }
+        else if (platform == "macos") {
+            compiler = c ? "clang" : "clang++";
+            extension = ""; // macOS binaries typically have no extension
+        }
+        else {
             std::cerr << "⚠️ Unsupported platform: " << platform << "\n";
             continue;
         }
-
         std::string outname = buildpath + name + "-" + config_version + "-" + platform + extension;
         std::string command = compiler + " -o \"" + outname + "\" \"" + src + "\"";
 
@@ -115,8 +127,11 @@ void build(std::string new_version) {
             command += " \"" + flag + "\"";
         }
 
-        if (type == "shared") {
+        if (type == "shared" && !is_macos) {
             command += " -shared -fPIC";
+        }else if(is_macos){
+            command += " --dynamiclib";
+            extension = ".dylib";
         }
 
         std::vector<std::string> includes = expand_includes(includepaths);
@@ -158,7 +173,8 @@ void create_new_project(const std::string& path) {
   "version": "1.0",
   "type": "elf",
   "name": "example",
-  "platforms": ["linux","windows"]
+  "platforms": ["linux","windows"],
+  "c":false
 })";
     proj.close();
 

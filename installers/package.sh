@@ -8,7 +8,7 @@ echo "📦 Packaging jmakepp version $VERSION"
 # --- Create .deb package ---
 echo "🔨 Creating .deb package..."
 mkdir -p deb-package/DEBIAN deb-package/usr/bin
-cp ../bin/jmakepp deb-package/usr/bin/jmakepp
+cp ../bin/jmakepp_linux deb-package/usr/bin/jmakepp
 chmod 755 deb-package/usr/bin/jmakepp
 
 cat > deb-package/DEBIAN/control << EOF
@@ -46,23 +46,22 @@ cat > wix/jmakepp.wxs << EOF
     <Package InstallerVersion="500" Compressed="yes" InstallScope="perMachine"/>
     <MajorUpgrade DowngradeErrorMessage="A newer version of jmakepp is already installed."/>
     
-    <!-- Add Media and MediaTemplate elements to ensure the cabinet is created -->
+    <!-- Allow user to choose installation folder -->
+    <Property Id="INSTALLDIR" Secure="yes" />
+    
     <Media Id="1" Cabinet="jmakepp.cab" EmbedCab="yes" />
     
-    <!-- Feature definition -->
     <Feature Id="MainFeature" Title="jmakepp" Level="1">
       <ComponentRef Id="MainExecutable"/>
     </Feature>
 
-    <!-- Directory structure -->
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
-        <Directory Id="INSTALLFOLDER" Name="jmakepp"/>
+        <Directory Id="INSTALLDIR" Name="jmakepp"/>
       </Directory>
     </Directory>
 
-    <!-- Install executable -->
-    <DirectoryRef Id="INSTALLFOLDER">
+    <DirectoryRef Id="INSTALLDIR">
       <Component Id="MainExecutable" Guid="$(uuidgen)">
         <File Id="JmakeppExe" Source="../bin/jmakepp.exe" KeyPath="yes"/>
       </Component>
@@ -74,9 +73,58 @@ EOF
 wixl -o "jmakepp_${VERSION}_amd64.msi" wix/jmakepp.wxs
 rm -rf wix
 
+# --- Create macOS .app bundle ---
+echo "🔨 Creating macOS .app bundle..."
+APP_DIR="jmakepp.app"
+mkdir -p "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources"
+cp ../bin/jmakepp_macos "$APP_DIR/Contents/MacOS/jmakepp"
+chmod +x "$APP_DIR/Contents/MacOS/jmakepp"
+
+cat > "$APP_DIR/Contents/Info.plist" << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>jmakepp</string>
+    <key>CFBundleDisplayName</key>
+    <string>jmakepp</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.replit.jmakepp</string>
+    <key>CFBundleVersion</key>
+    <string>${VERSION}</string>
+    <key>CFBundleExecutable</key>
+    <string>jmakepp</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+</dict>
+</plist>
+EOF
+
+# --- Create macOS .pkg installer ---
+echo "🔨 Creating macOS .pkg installer..."
+PKG_ROOT="pkgroot"
+PKG_IDENTIFIER="com.replit.jmakepp"
+mkdir -p "$PKG_ROOT/usr/local/bin"
+cp ../bin/jmakepp_macos "$PKG_ROOT/usr/local/bin/jmakepp"
+chmod +x "$PKG_ROOT/usr/local/bin/jmakepp"
+
+./pkgbuild/PKGBUILD --root "$PKG_ROOT" \
+         --identifier "$PKG_IDENTIFIER" \
+         --version "$VERSION" \
+         --install-location "/usr/local/bin" \
+         "jmakepp_${VERSION}_macos.pkg"
+
+rm -rf "$PKG_ROOT"
+
 echo "✅ Packages created:"
 echo "  - jmakepp_${VERSION}_amd64.deb"
 echo "  - jmakepp_${VERSION}_amd64.msi"
+echo "  - jmakepp.app"
+echo "  - jmakepp_${VERSION}_macos.pkg"
+
 echo ""
-echo "⚠️ Note: PATH is not automatically updated (wixl doesn't support that)."
-echo "         You can manually add the install folder to PATH after installation."
+echo "⚠️ Notes:"
+echo "  - Windows MSI: users can choose installation folder."
+echo "  - macOS PKG: users can choose installation location during install."
+echo "  - macOS .app: drag-and-drop runnable bundle."
