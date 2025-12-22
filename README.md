@@ -191,3 +191,4 @@ Responsible Sharing License do most things freely and give credit if republishin
 
 - 1.8.6
   - added support for macos
+  - added support for C compilation via clang for macos and gcc for windows/linux
