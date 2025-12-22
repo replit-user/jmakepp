@@ -21,7 +21,7 @@
 namespace fs = std::filesystem;
 
 using json = nlohmann::json;
-std::string version = "1.8.6";
+std::string version = "1.8.7";
 // Utility to run a system command and print it
 int run_cmd(const std::string& cmd) {
     std::cout << "🚧 Running: " << cmd << "\n";
@@ -243,7 +243,14 @@ void update(std::string final_dest) {
         return;
     }
 
-    std::string binary_name = is_windows ? "jmakepp.exe" : "jmakepp";
+    std::string binary_name;
+    if (is_windows) {
+        binary_name = "jmakepp.exe";
+    } else if(is_macos) {
+        binary_name = "jmakepp_macos";
+    }else{
+        binary_name = "jmakepp_linux";
+    }
     std::string src = dest + "/bin/" + binary_name;
 
     if (!fs::exists(src)) {
