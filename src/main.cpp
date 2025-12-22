@@ -7,6 +7,7 @@
 #include <sstream>
 #include "../include/nlohmann/json.hpp" // JSON library
 #include "./filio.hpp" // simpler file I/O
+
 #ifdef _WIN32
     bool is_windows = true;
     bool is_macos = false;
@@ -17,11 +18,13 @@
     bool is_windows = false;
     bool is_macos = false;
 #endif
+
 #include <filesystem>
 namespace fs = std::filesystem;
 
 using json = nlohmann::json;
 std::string version = "1.8.7";
+
 // Utility to run a system command and print it
 int run_cmd(const std::string& cmd) {
     std::cout << "🚧 Running: " << cmd << "\n";
@@ -52,7 +55,6 @@ std::vector<std::string> expand_includes(const std::vector<std::string>& raw) {
         if (path.find('*') != std::string::npos) {
             size_t pos = path.find('*');
             std::string base = path.substr(0, pos);
-            // Remove trailing slash if exists
             if (!base.empty() && base.back() == '/') {
                 base.pop_back();
             }
@@ -88,7 +90,6 @@ void build(std::string new_version) {
     std::string config_version = config["version"];
     std::vector<std::string> flags;
 
-    // Support both array and string format for flags
     if (config["flags"].is_string()) {
         std::istringstream iss(config["flags"].get<std::string>());
         std::string flag;
@@ -106,20 +107,21 @@ void build(std::string new_version) {
         
         if (platform == "linux") {
             compiler = c ? "gcc" : "g++";
-            extension = "";
+            extension = (type == "shared") ? ".so" : "";
         }
         else if (platform == "windows") {
             compiler = c ? "x86_64-w64-mingw32-gcc" : "x86_64-w64-mingw32-g++";
-            extension = ".exe";
+            extension = (type == "shared") ? ".dll" : ".exe";
         }
         else if (platform == "macos") {
             compiler = c ? "clang" : "clang++";
-            extension = ""; // macOS binaries typically have no extension
+            extension = (type == "shared") ? ".dylib" : "";
         }
         else {
             std::cerr << "⚠️ Unsupported platform: " << platform << "\n";
             continue;
         }
+
         std::string outname = buildpath + name + "-" + config_version + "-" + platform + extension;
         std::string command = compiler + " -o \"" + outname + "\" \"" + src + "\"";
 
@@ -127,11 +129,13 @@ void build(std::string new_version) {
             command += " \"" + flag + "\"";
         }
 
-        if (type == "shared" && !is_macos) {
-            command += " -shared -fPIC";
-        }else if(is_macos){
-            command += " --dynamiclib";
-            extension = ".dylib";
+        // Apply platform-specific shared library flags
+        if (type == "shared") {
+            if (platform == "macos") {
+                command += " -dynamiclib";
+            } else {
+                command += " -shared -fPIC";
+            }
         }
 
         std::vector<std::string> includes = expand_includes(includepaths);
@@ -158,8 +162,6 @@ void build(std::string new_version) {
     }
 }
 
-
-// Create new project directory
 void create_new_project(const std::string& path) {
     fs::create_directories(path + "/src");
     fs::create_directories(path + "/include");
@@ -173,13 +175,12 @@ void create_new_project(const std::string& path) {
   "version": "1.0",
   "type": "elf",
   "name": "example",
-  "platforms": ["linux","windows"],
+  "platforms": ["linux","windows","macos"],
   "c":false
 })";
     proj.close();
 
     std::string abs_path = fs::absolute(fs::path(path)).string();
-    // Escape quotes in path
     size_t pos = 0;
     while ((pos = abs_path.find('"', pos)) != std::string::npos) {
         abs_path.replace(pos, 1, "\\\"");
@@ -192,7 +193,6 @@ void create_new_project(const std::string& path) {
     std::cout << "✅ Project created at: " << path << "\n";
 }
 
-// Install header files to ./include/
 void install_headers(const std::string& from_path) {
     fs::create_directories("include");
     fs::path source = fs::absolute(from_path);
@@ -202,12 +202,9 @@ void install_headers(const std::string& from_path) {
         return;
     }
 
-    // Handle single file
     if (fs::is_regular_file(source)) {
         if (source.extension() == ".h" || source.extension() == ".hpp") {
-            fs::copy_file(source,
-                          fs::path("include") / source.filename(),
-                          fs::copy_options::overwrite_existing);
+            fs::copy_file(source, fs::path("include") / source.filename(), fs::copy_options::overwrite_existing);
             std::cout << "✅ Installed header: " << source.filename() << "\n";
         } else {
             std::cout << "❌ Not a header file: " << source << "\n";
@@ -215,24 +212,17 @@ void install_headers(const std::string& from_path) {
         return;
     }
 
-    // Handle directory
     for (auto& entry : fs::recursive_directory_iterator(source)) {
-        if (entry.is_regular_file() &&
-            (entry.path().extension() == ".h" || entry.path().extension() == ".hpp")) {
-
-            // Compute relative path
+        if (entry.is_regular_file() && (entry.path().extension() == ".h" || entry.path().extension() == ".hpp")) {
             auto rel_path = fs::relative(entry.path().parent_path(), source);
             fs::path dest = fs::path("include") / rel_path / entry.path().filename();
-
             fs::create_directories(dest.parent_path());
             fs::copy_file(entry.path(), dest, fs::copy_options::overwrite_existing);
         }
     }
-
     std::cout << "✅ Headers installed to ./include\n";
 }
 
-// Update the tool to the latest version from GitHub
 void update(std::string final_dest) {
     std::string url = "https://github.com/replit-user/jmakepp.git";
     std::string dest = "./TMP";
@@ -248,9 +238,10 @@ void update(std::string final_dest) {
         binary_name = "jmakepp.exe";
     } else if(is_macos) {
         binary_name = "jmakepp_macos";
-    }else{
+    } else {
         binary_name = "jmakepp_linux";
     }
+    
     std::string src = dest + "/bin/" + binary_name;
 
     if (!fs::exists(src)) {
@@ -272,13 +263,9 @@ void update(std::string final_dest) {
     }
 
     run_cmd(is_windows ? "rmdir /s /q TMP" : "rm -rf ./TMP");
-
     std::cout << "✅ Update completed successfully.\n";
 }
 
-
-
-// Main CLI dispatcher
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         std::cout << "Usage: jmakepp [build|new|install|help|version|clean|update] [optional args]\n";
@@ -286,7 +273,6 @@ int main(int argc, char* argv[]) {
     }
 
     std::string cmd = argv[1];
-    std::string exe_path = argv[0];
 
     try {
         if (cmd == "build") {
@@ -313,12 +299,15 @@ int main(int argc, char* argv[]) {
                       << "  build <version> - Builds project and updates version\n"
                       << "  install <path>  - Installs headers from path\n"
                       << "  update          - Updates the tool to the latest version\n"
+                      << "  clean           - Removes build directory\n"
+                      << "  version         - Shows current version\n"
                       << "  help            - Shows this message\n";
         } else if(cmd == "version") {
             std::cout << "Version: " << version << "\n";
             return 0;
         } else if (cmd == "clean") {
-            std::string buildpath = load_project_config()["buildpath"];
+            json config = load_project_config();
+            std::string buildpath = config["buildpath"];
             if (fs::exists(buildpath)) {
                 fs::remove_all(buildpath);
                 std::cout << "✅ Cleaned build directory\n";
