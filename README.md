@@ -20,8 +20,7 @@
 - 🚀 Installer scripts (`installer.sh` / `installer.ps1`) for PATH setup
 
 ---
-## patch notes:
-- fix a bug where the built project would output a relative path if a relative path was given, now it uses `filio::extra::absolute_path`
+
 ## 🚀 Getting Started
 
 ### 📥 Installation
@@ -192,3 +191,5 @@ Responsible Sharing License do most things freely and give credit if republishin
 - 1.8.6
   - added support for macos
   - added support for C compilation via clang for macos and gcc for windows/linux
+- 1.8.7
+  -fixed the update command(uses sudo when permissions fail) 
