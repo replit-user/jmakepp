@@ -1,7 +1,7 @@
 {
     "buildpath": "./bin/",
     "c": false,
-    "flags": "-std=c++17 -O2 -static-libgcc -static-libstdc++ ./src/updater.cpp ./src/filio.cpp ./src/cli.cpp ./src/project.cpp ./src/installer.cpp ./src/builder.cpp ./src/config.cpp",
+    "flags": "-std=c++17 -O2 -static-libgcc -static-libstdc++ ./src/updater.cpp ./src/filio.cpp ./src/cli.cpp ./src/project.cpp ./src/installer.cpp ./src/builder.cpp ./src/config.cpp -g",
     "includepaths": [
         "./include/dauser",
         "./include/nlohmann"
@@ -13,5 +13,5 @@
     ],
     "srcpath": "./src/main.cpp",
     "type": "elf",
-    "version": "1.8.8"
+    "version": "1.8.7"
 }

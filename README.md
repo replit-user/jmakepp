@@ -52,7 +52,7 @@ jmakepp install <path>  # Install .h/.hpp files to ./include
 jmakepp clean           # Remove the ./build directory
 jmakepp version         # Show jmake++ version
 jmakepp help            # Show available commands
-jmakepp update          # update the script
+jmakepp update          # update the script but for some reason doesn't work
 ```
 
 ---
