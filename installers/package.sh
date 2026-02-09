@@ -73,58 +73,12 @@ EOF
 wixl -o "jmakepp_${VERSION}_amd64.msi" wix/jmakepp.wxs
 rm -rf wix
 
-# --- Create macOS .app bundle ---
-echo "🔨 Creating macOS .app bundle..."
-APP_DIR="jmakepp.app"
-mkdir -p "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources"
-cp ../bin/jmakepp_macos "$APP_DIR/Contents/MacOS/jmakepp"
-chmod +x "$APP_DIR/Contents/MacOS/jmakepp"
 
-cat > "$APP_DIR/Contents/Info.plist" << EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>CFBundleName</key>
-    <string>jmakepp</string>
-    <key>CFBundleDisplayName</key>
-    <string>jmakepp</string>
-    <key>CFBundleIdentifier</key>
-    <string>com.replit.jmakepp</string>
-    <key>CFBundleVersion</key>
-    <string>${VERSION}</string>
-    <key>CFBundleExecutable</key>
-    <string>jmakepp</string>
-    <key>CFBundlePackageType</key>
-    <string>APPL</string>
-</dict>
-</plist>
-EOF
-
-# --- Create macOS .pkg installer ---
-echo "🔨 Creating macOS .pkg installer..."
-PKG_ROOT="pkgroot"
-PKG_IDENTIFIER="com.replit.jmakepp"
-mkdir -p "$PKG_ROOT/usr/local/bin"
-cp ../bin/jmakepp_macos "$PKG_ROOT/usr/local/bin/jmakepp"
-chmod +x "$PKG_ROOT/usr/local/bin/jmakepp"
-
-./pkgbuild/PKGBUILD --root "$PKG_ROOT" \
-         --identifier "$PKG_IDENTIFIER" \
-         --version "$VERSION" \
-         --install-location "/usr/local/bin" \
-         "jmakepp_${VERSION}_macos.pkg"
-
-rm -rf "$PKG_ROOT"
 
 echo "✅ Packages created:"
 echo "  - jmakepp_${VERSION}_amd64.deb"
 echo "  - jmakepp_${VERSION}_amd64.msi"
-echo "  - jmakepp.app"
-echo "  - jmakepp_${VERSION}_macos.pkg"
 
 echo ""
 echo "⚠️ Notes:"
 echo "  - Windows MSI: users can choose installation folder."
-echo "  - macOS PKG: users can choose installation location during install."
-echo "  - macOS .app: drag-and-drop runnable bundle."

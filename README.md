@@ -2,7 +2,7 @@
 
 `jmake++` is a lightweight, zero-dependency build system for C++ projects, written in C++. It replaces complex systems like Make and CMake for small to mid-size projects with a single JSON configuration file and intuitive CLI.
 
-**Version:** `1.8.6`
+**Version:** `1.8.7`
 **Platforms:** Windows ✅ & Linux ✅  
 **Dependencies:** `g++`, `nlohmann/json`, and optionally `filio.h` (bundled or install separately)
 
@@ -52,7 +52,7 @@ jmakepp install <path>  # Install .h/.hpp files to ./include
 jmakepp clean           # Remove the ./build directory
 jmakepp version         # Show jmake++ version
 jmakepp help            # Show available commands
-jmakepp update          # update the script, FIXED
+jmakepp update          # update the script but for some reason doesn't work
 ```
 
 ---
@@ -192,4 +192,6 @@ Responsible Sharing License do most things freely and give credit if republishin
   - added support for macos
   - added support for C compilation via clang for macos and gcc for windows/linux
 - 1.8.7
-  -fixed the update command(uses sudo when permissions fail) 
+  - ## patch notes:
+ - fix a bug where update wouldn't work
+ - removed all macos only features(jk there were none) but macos support will not work until I get access to a mac device and when I do updates for mac will come out slower than linux and windows(and only updates when major versions change eg 1.7->1.8) or the version number(eg 1.9-2.0 or 1.7.8 -> 2.0.0 ;) ) 
