@@ -18,6 +18,7 @@ Architecture: amd64
 Maintainer: replit-user
 Description: Simple C++ Build Tool
 Depends: g++, mingw-w64
+Recommends: mingw-w64
 EOF
 
 dpkg-deb --build deb-package "jmakepp_${VERSION}_amd64.deb"

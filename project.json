@@ -1,4 +1,5 @@
 {
+    "binary name": "",
     "buildpath": "./bin/",
     "c": false,
     "flags": "-std=c++17 -O2 -static-libgcc -static-libstdc++ ./src/updater.cpp ./src/filio.cpp ./src/cli.cpp ./src/project.cpp ./src/installer.cpp ./src/builder.cpp ./src/config.cpp -g",
@@ -7,13 +8,12 @@
         "./include/nlohmann"
     ],
     "name": "jmakepp",
+    "override binary name": false,
     "platforms": [
         "windows",
         "linux"
     ],
     "srcpath": "./src/main.cpp",
     "type": "elf",
-    "version": "1.9.0",
-    "override binary name":false,
-    "binary name":""
+    "version": "1.9.0"
 }

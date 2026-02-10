@@ -148,6 +148,8 @@ Removes the build directory completely.
 -   [`filio`](https://github.com/replit-user/filio) for cleaner I/O abstraction (optional)
     
 -   C++17 and `<filesystem>` for cross-platform FS operations
+
+-   jmakepp itself!
     
 
 ---
