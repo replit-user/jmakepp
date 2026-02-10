@@ -1,4 +1,4 @@
-#include "../../include/dauser/project.hpp"
+#include "../include/dauser/project.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iostream>

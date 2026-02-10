@@ -180,6 +180,7 @@ g++ -std=c++17 -O2 -o ./build/libmyproject-1.0.so ./src/main.cpp -shared -fPIC -
 
 - macOS support is not currently maintained (C) support was added but is not actively tested
 - Only tested on Linux (x86_64)
+- if you're compiling multiple source files, then put the source file names in the argument section of project.json, otherwise it will fail to compile(currently fixing for 2.0 update and multithreaded)
 
 ---
 
@@ -196,6 +197,7 @@ Responsible Sharing License do most things freely and give credit if republishin
 
 ## 🔖 Version History
 
+- **2.0.0** - added multithreading and multiple soirce files in srcpath
 - **1.9.0** - added a binary name override option in project.json and remove installer.ps1/installer.sh
 - **1.8.8** - Previous release
 - **1.8.7** - Fixed update mechanism

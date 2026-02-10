@@ -1,6 +1,6 @@
-#include "../../include/dauser/updater.hpp"
-#include "../../include/dauser/builder.hpp"
-#include "../../include/dauser/filio.hpp"
+#include "../include/dauser/updater.hpp"
+#include "../include/dauser/builder.hpp"
+#include "../include/dauser/filio.hpp"
 #include <filesystem>
 #include <iostream>
 

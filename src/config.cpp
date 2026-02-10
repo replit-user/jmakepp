@@ -1,4 +1,4 @@
-#include "../../include/dauser/config.hpp"
+#include "../include/dauser/config.hpp"
 #include <fstream>
 #include <filesystem>
 #include <iostream>

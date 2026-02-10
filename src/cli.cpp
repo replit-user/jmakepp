@@ -1,15 +1,8 @@
-#include "../../include/dauser/cli.hpp"
-#include "../../include/dauser/builder.hpp"
-#include "../../include/dauser/project.hpp"
-#include "../../include/dauser/installer.hpp"
-#include "../../include/dauser/updater.hpp"
-#include "../../include/dauser/config.hpp"
-#include "../../include/dauser/filio.hpp"
+
 #include <iostream>
-#include <filesystem>
 
 std::string get_version() {
-    return "1.9.0";
+    return "2.0.0";
 }
 
 void show_help() {

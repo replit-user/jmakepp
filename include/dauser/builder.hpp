@@ -2,6 +2,7 @@
 #define BUILDER_HPP
 
 #include <string>
+#include <vector>
 
 // Utility to run a system command and print it
 int run_cmd(const std::string& cmd);

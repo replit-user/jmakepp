@@ -1,8 +1,8 @@
 {
-    "binary name": "",
+    "binary name": "jmakepp",
     "buildpath": "./bin/",
     "c": false,
-    "flags": "-std=c++17 -O2 -static-libgcc -static-libstdc++ ./src/updater.cpp ./src/filio.cpp ./src/cli.cpp ./src/project.cpp ./src/installer.cpp ./src/builder.cpp ./src/config.cpp -g",
+    "flags": "-std=c++17 -O2 -static-libgcc -static-libstdc++ -g",
     "includepaths": [
         "./include/dauser",
         "./include/nlohmann"
@@ -13,7 +13,16 @@
         "windows",
         "linux"
     ],
-    "srcpath": "./src/main.cpp",
+    "srcpath": [
+        "./src/main.cpp",
+        "./src/updater.cpp",
+        "./src/filio.cpp",
+        "./src/cli.cpp",
+        "./src/project.cpp",
+        "./src/installer.cpp",
+        "./src/builder.cpp",
+        "./src/config.cpp"
+    ],
     "type": "elf",
-    "version": "1.9.0"
+    "version": "2.0.0"
 }
