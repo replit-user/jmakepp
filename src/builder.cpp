@@ -36,6 +36,8 @@ void build(std::string new_version) {
     } else if (config["flags"].is_array()) {
         flags = config["flags"].get<std::vector<std::string>>();
     }
+    bool override_name = config["override binary name"];
+    std::string override = config["binary name"];
 
     fs::create_directories(fs::path(buildpath));
     std::vector<std::string> platforms = config.value("platforms", std::vector<std::string>{"linux"});
@@ -71,8 +73,17 @@ void build(std::string new_version) {
             std::cerr << "⚠️ Unsupported platform: " << platform << "\n";
             continue;
         }
+        try{config["version"] = new_version;
+        std::ofstream out("project.json");
+        out << config.dump(4);
+        std::cout << "🔄 Updated version to: " << new_version << "\n";}catch(std::exception){
+            std::cout << "⚠️ version not updated due to an unexpected error";
+        }
 
         std::string outname = buildpath + name + "-" + config_version + "-" + platform + extension;
+        if(override_name){
+            outname = override;
+        }
         std::string command = compiler + " -o \"" + outname + "\" \"" + src + "\"";
 
         for (const auto& flag : flags) {
@@ -100,14 +111,5 @@ void build(std::string new_version) {
         } else {
             std::cout << "✅ Built for " << platform << " -> " << outname << "\n";
         }
-    }
-
-    if (all_success) {
-        config["version"] = new_version;
-        std::ofstream out("project.json");
-        out << config.dump(4);
-        std::cout << "🔄 Updated version to: " << new_version << "\n";
-    } else {
-        std::cout << "⚠️ Version not updated due to build failures\n";
     }
 }

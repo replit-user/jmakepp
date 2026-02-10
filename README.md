@@ -2,9 +2,9 @@
 
 `jmake++` is a lightweight, zero-dependency build system for C++ projects, written in C++. It replaces complex systems like Make and CMake for small to mid-size projects with a single JSON configuration file and intuitive CLI.
 
-**Version:** `1.8.7`
+**Version:** `1.9.0`
 **Platforms:** Windows ✅ & Linux ✅  
-**Dependencies:** `g++`, `nlohmann/json`, and optionally `filio.h` (bundled or install separately)
+**Dependencies:** `g++`, `nlohmann/json` (bundled), `filio` (bundled), and C++17 standard library
 
 ---
 
@@ -25,23 +25,17 @@
 
 ### 📥 Installation
 
-**On Linux:**
-double click the .deb file
+Download the prebuilt binary for your platform from the [repo](https://github.com/replit-user/jmakepp/bin) page, or build from source:
 
-
-**On windows**
-double click the .MSI file
-
-THE INSTALLER SCRIPTS FROM NOW ON WILL BE OUTDATED PLEASE NOTE THIS BUT THEY SHOULD STILL WORK JUST WILL NO LONGER RECIVE UPDATES
-
-###### or if you have an older version of jmake++:
 ```bash
 git clone https://github.com/replit-user/jmakepp ./jmakepp
 cd jmakepp
-jmakepp build
----
+./jmakepp_linux build 1.9.0  # On Linux
+# or
+jmakepp_windows.exe build 1.9.0  # On Windows
 ```
-however this will only work if the version of jmake++ you have supports the flags key in project.json most newer versions should
+
+Add the binary to your PATH for system-wide access using the provided .deb and .msi packages
 
 ## 🔧 Commands
 
@@ -52,7 +46,7 @@ jmakepp install <path>  # Install .h/.hpp files to ./include
 jmakepp clean           # Remove the ./build directory
 jmakepp version         # Show jmake++ version
 jmakepp help            # Show available commands
-jmakepp update          # update the script but for some reason doesn't work
+jmakepp update          # update the script
 ```
 
 ---
@@ -63,14 +57,14 @@ jmakepp update          # update the script but for some reason doesn't work
 jmakepp new myproject
 cd myproject
 jmakepp build 1.1.0
-./build/example-1.1.0
+./build/myproject-1.1.0
 ```
 
-You’ll see:
+You'll see:
 
 ```bash
-🚧 Running: g++ -o ./build/example-1.0 ./src/main.cpp -I./include
-✅ Build successful -> ./build/example-1.0
+🚧 Running: g++ -o ./build/myproject-1.1.0 ./src/main.cpp -I./include
+✅ Build successful -> ./build/myproject-1.1.0
 🔄 Updated version to: 1.1.0
 ```
 
@@ -90,7 +84,10 @@ You’ll see:
   "platforms":[
     "windows",
     "linux"
-  ]
+  ],
+  "c":false,
+  "override binary name":false,
+  "binary name":""
 }
 ```
 
@@ -158,20 +155,29 @@ Removes the build directory completely.
 ## 📦 Example Build Output
 
 ```bash
-g++ -o ./build/example-1.0 ./src/main.cpp -I./include
+g++ -std=c++17 -O2 -o ./build/myproject-1.0 ./src/main.cpp -I./include
 ```
 
 For shared libraries:
 
 ```bash
-g++ -o ./build/libexample-1.0.so ./src/main.cpp -shared -fPIC -I./include
+g++ -std=c++17 -O2 -o ./build/libmyproject-1.0.so ./src/main.cpp -shared -fPIC -I./include
 ```
 
 ---
 
-## 📌 Roadmap
+## 📌 Latest Changes (v1.9.0)
 
-empty for now
+- C++17 standard compilation
+- Optimized builds with `-O2` flag
+- Static linking support (libgcc, libstdc++)
+- Improved cross-platform compatibility
+- Multiple source file support via flags
+
+## ❗ Known Limitations
+
+- macOS support is not currently maintained (C) support was added but is not actively tested
+- Only tested on Linux (x86_64)
 
 ---
 
@@ -186,12 +192,9 @@ Made by [replit-user](https://github.com/replit-user)
 Responsible Sharing License do most things freely and give credit if republishing
 
 
-#### patch notes
+## 🔖 Version History
 
-- 1.8.6
-  - added support for macos
-  - added support for C compilation via clang for macos and gcc for windows/linux
-- 1.8.7
-  - ## patch notes:
- - fix a bug where update wouldn't work
- - removed all macos only features(jk there were none) but macos support will not work until I get access to a mac device and when I do updates for mac will come out slower than linux and windows(and only updates when major versions change eg 1.7->1.8) or the version number(eg 1.9-2.0 or 1.7.8 -> 2.0.0 ;) ) 
+- **1.9.0** - added a binary name override option in project.json and remove installer.ps1/installer.sh
+- **1.8.8** - Previous release
+- **1.8.7** - Fixed update mechanism
+- **1.8.6** - Added C language support and experimental macOS support 

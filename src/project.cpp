@@ -19,7 +19,9 @@ void create_new_project(const std::string& path) {
   "type": "elf",
   "name": "example",
   "platforms": ["linux","windows","macos"],
-  "c":false
+  "c":false,
+  "override binary name":false,
+  "binary name":""
 })";
     proj.close();
 

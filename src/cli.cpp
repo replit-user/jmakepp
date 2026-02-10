@@ -9,7 +9,7 @@
 #include <filesystem>
 
 std::string get_version() {
-    return "1.8.7";
+    return "1.9.0";
 }
 
 void show_help() {
