@@ -30,9 +30,9 @@ Download the prebuilt binary for your platform from the [repo](https://github.co
 ```bash
 git clone https://github.com/replit-user/jmakepp ./jmakepp
 cd jmakepp
-./jmakepp_linux build 1.9.0  # On Linux
+./jmakepp_linux build 2.0.0  # On Linux
 # or
-jmakepp_windows.exe build 1.9.0  # On Windows
+jmakepp_windows.exe build 2.0.0  # On Windows
 ```
 
 Add the binary to your PATH for system-wide access using the provided .deb and .msi packages
