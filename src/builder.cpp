@@ -13,7 +13,6 @@ namespace fs = std::filesystem;
 std::mutex compilation_mutex;
 
 int run_cmd(const std::string& cmd) {
-    std::cout << "🚧 Running: " << cmd << "\n";
     int result = std::system((cmd + " 2>&1").c_str());
     if (result == 0) {
         return 0;
