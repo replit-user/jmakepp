@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     try {
         if (cmd == "build") {
             if (argc < 3) {
-                std::cout << "Usage: jmakepp build <new_version> true|false {overide_name}\n";
+                std::cout << "Usage: jmakepp build <new_version>";
                 return 1;
             }
             build(argv[2]);
