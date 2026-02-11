@@ -8,7 +8,7 @@
         "./include/nlohmann"
     ],
     "name": "jmakepp",
-    "override binary name": false,
+    "override binary name": true,
     "platforms": [
         "windows",
         "linux"
