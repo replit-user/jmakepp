@@ -2,7 +2,7 @@
     "binary name": "jmakepp",
     "buildpath": "./bin/",
     "c": false,
-    "flags": "-std=c++17 -O2 -static-libgcc -static-libstdc++ -g",
+    "flags": "-std=c++17 -O2 -static-libgcc -static-libstdc++",
     "includepaths": [
         "./include/dauser",
         "./include/nlohmann"
