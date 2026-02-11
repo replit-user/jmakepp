@@ -192,6 +192,7 @@ Responsible Sharing License do most things freely and give credit if republishin
 
 ## 🔖 Version History
 
+- **2.0.1** - a small bugfix
 - **2.0.0** - added multithreading and multiple soirce files in srcpath
 - **1.9.0** - added a binary name override option in project.json and remove installer.ps1/installer.sh
 - **1.8.8** - Previous release
