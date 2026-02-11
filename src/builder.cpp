@@ -160,7 +160,7 @@ void build(std::string new_version) {
         // Link all object files together
         std::string outname = buildpath + name + "-" + config_version + "-" + platform + extension;
         if (override_name) {
-            outname = override + '_' + platform;
+            outname = buildpath + override + '_' + platform;
         }
         
         std::string link_command = compiler + " -o \"" + outname + "\"";
