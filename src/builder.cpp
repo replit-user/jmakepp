@@ -1,5 +1,6 @@
 #include "../include/dauser/builder.hpp"
 #include "../include/dauser/config.hpp"
+#include "../include/dauser/platform.hpp"
 #include <iostream>
 #include <filesystem>
 #include <fstream>
@@ -75,17 +76,6 @@ void build(std::string new_version) {
     fs::create_directories(fs::path(buildpath));
     std::vector<std::string> platforms = config.value("platforms", std::vector<std::string>{"linux"});
     bool all_success = true;
-
-    #ifdef _WIN32
-        bool is_windows = true;
-        bool is_macos = false;
-    #elif __APPLE__
-        bool is_windows = false;
-        bool is_macos = true;
-    #else
-        bool is_windows = false;
-        bool is_macos = false;
-    #endif
 
     for (const std::string& platform : platforms) {
         std::string compiler, extension;
