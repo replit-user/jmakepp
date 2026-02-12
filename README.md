@@ -99,10 +99,13 @@ You'll see:
 | `version` | `string` | Semantic version string |
 | `buildpath` | `string` | Output path for compiled binary |
 | `includepaths` | `array[string]` | List of include directories (supports `*`) |
-| `srcpath` | `string` | Source file(s) (currently only one path) |
+| `srcpath` | `array[string]` | Source file(s) |
 | `type` | `"elf"` or `"shared"` | Build target: executable or shared lib |
 | `flags`| `string or list of strings`| `additional flags to add to g++`
 |`platforms`|`list of strings, either windows or linux`|`the platofrms to compile with`|
+|`override binary name`|`boolean`|`wheather or not to override the default binary naming`|
+|`binary name`|`string`|`if obverriding the binary name, tha binary name to use`
+
 ---
 
 ## 📁 Directory Layout (after `jmakepp new`)
