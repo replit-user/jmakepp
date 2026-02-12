@@ -61,19 +61,6 @@ int main(int argc, char* argv[]) {
             if (std::filesystem::exists(buildpath_fs)) {
                 std::filesystem::remove_all(buildpath_fs);
                 std::cout << "✅ Cleaned build directory\n";
-            } else if(cmd == "run"){
-                json config = load_project_config();
-                build(config["version"]);
-                if(config["override binary name"]){
-                    std::string buildpath = config["buildpath"];
-                    std::string binary_name = config["binary name"];
-                    run_cmd(buildpath + "" + binary_name + (is_windows?".exe":is_macos?"-macos":"-linux"));
-                }else{
-                    std::string version = config["version"];
-                    std::string buildpath = config["buildpath"];
-                    std::string name = config["name"];
-                    run_cmd(buildpath + name + "-" + version + (is_windows?"-windows.exe":is_macos?"-macos":"-linux"));
-                }
             }
             
             else {
@@ -81,7 +68,20 @@ int main(int argc, char* argv[]) {
             }
         } else if (cmd == "update") {
             update(filio::extra::script_path().string());
-        }
+        }else if(cmd == "run"){
+                json config = load_project_config();
+                build(config["version"]);
+                if(config["override binary name"]){
+                    std::string buildpath = config["buildpath"];
+                    std::string binary_name = config["binary name"];
+                    run_cmd(buildpath + "" + binary_name + (is_windows?"_windows.exe":is_macos?"_macos":"_linux"));
+                }else{
+                    std::string version = config["version"];
+                    std::string buildpath = config["buildpath"];
+                    std::string name = config["name"];
+                    run_cmd(buildpath + name + "-" + version + (is_windows?"-windows.exe":is_macos?"-macos":"-linux"));
+                }
+            }
         else {
             std::cout << "❌ Unknown command: " << cmd << "\n";
             return 1;

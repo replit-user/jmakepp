@@ -2,8 +2,8 @@
 
 `jmake++` is a lightweight, zero-dependency build system for C++ projects, written in C++. It replaces complex systems like Make and CMake for small to mid-size projects with a single JSON configuration file and intuitive CLI.
 
-**Version:** `2.0.1`
-**Platforms:** Windows ✅ & Linux ✅  
+**Version:** `2.0.2`
+**Platforms:** Windows ✅ & Linux ✅  & MacOS ⚠️(needs to build from source, not tested)
 **Dependencies:** `g++`, `nlohmann/json` (bundled), `filio` (bundled), and C++17 standard library
 
 ---
@@ -30,9 +30,9 @@ Download the prebuilt binary for your platform from the [repo](https://github.co
 ```bash
 git clone https://github.com/replit-user/jmakepp ./jmakepp
 cd jmakepp
-./jmakepp_linux build 2.0.1  # On Linux
+./jmakepp_linux build 2.0.2  # On Linux
 # or
-jmakepp_windows.exe build 2.0.1  # On Windows
+jmakepp_windows.exe build 2.0.2  # On Windows
 ```
 
 Add the binary to your PATH for system-wide access using the provided .deb and .msi packages
@@ -47,6 +47,7 @@ jmakepp clean           # Remove the ./build directory
 jmakepp version         # Show jmake++ version
 jmakepp help            # Show available commands
 jmakepp update          # update the script
+jmakepp run             # build the program and run the binary
 ```
 
 ---
@@ -171,14 +172,14 @@ g++ -std=c++17 -O2 -o ./build/libmyproject-1.0.so ./src/main.cpp -shared -fPIC -
 
 ---
 
-## 📌 Latest Changes (v2.0.1)
+## 📌 Latest Changes (v2.0.2)
 
-fixed a small bug
+introduced the run command
 
 ## ❗ Known Limitations
 
 - macOS support is not currently maintained (C) support was added but is not actively tested
-- Only tested on Linux (x86_64)
+- Only tested on Linux (x86_64) and windows x86_64
 
 ---
 
@@ -195,6 +196,8 @@ Responsible Sharing License do most things freely and give credit if republishin
 
 ## 🔖 Version History
 
+
+- **2.0.2** - add run command
 - **2.0.1** - a small bugfix
 - **2.0.0** - added multithreading and multiple soirce files in srcpath
 - **1.9.0** - added a binary name override option in project.json and remove installer.ps1/installer.sh
