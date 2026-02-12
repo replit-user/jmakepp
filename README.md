@@ -17,7 +17,7 @@
 - 🧼 `clean` command to delete build artifacts
 - 🆙 Automatic version tracking on successful builds
 - ✅ Cross-platform: single `.exe` for Windows; CLI-native on Linux
-- 🚀 Installer scripts (`installer.sh` / `installer.ps1`) for PATH setup
+- 🚀 Installers(`jmakepp_<version>_amd64.deb` and `jmakepp_<version>_amd64.msi`) in the installers directory
 
 ---
 
@@ -63,7 +63,7 @@ jmakepp build 1.1.0
 You'll see:
 
 ```bash
-🚧 Running: g++ -o ./build/myproject-1.1.0 ./src/main.cpp -I./include
+📦 Starting compilation
 ✅ Build successful -> ./build/myproject-1.1.0
 🔄 Updated version to: 1.1.0
 ```
