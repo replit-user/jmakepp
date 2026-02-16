@@ -9,19 +9,6 @@
 #include "../include/dauser/platform.hpp"
 #include <vector>
 
-std::vector<void*> allocations;
-
-void* tracked_malloc(size_t size) {
-    void* ptr = malloc(size);
-    allocations.push_back(ptr);
-    return ptr;
-}
-
-void free_all() {
-    for (void* ptr : allocations) free(ptr);
-    allocations.clear();
-}
-
 int main(int argc, char* argv[]) {
     if (argc < 2) {
         std::cout << "Usage: jmakepp [build|new|install|help|version|clean|update] [optional args]\n";
@@ -90,6 +77,5 @@ int main(int argc, char* argv[]) {
         std::cerr << "❌ Exception: " << e.what() << "\n";
         return 1;
     }
-    free_all();
     return 0;
 }
