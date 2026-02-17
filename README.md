@@ -2,7 +2,7 @@
 
 `jmake++` is a lightweight, zero-dependency build system for C++ projects, written in C++. It replaces complex systems like Make and CMake for small to mid-size projects with a single JSON configuration file and intuitive CLI.
 
-**Version:** `2.0.2`
+**Version:** `2.0.3`
 **Platforms:** Windows ✅ & Linux ✅  & MacOS ⚠️(needs to build from source, not tested)
 **Dependencies:** `g++`, `nlohmann/json` (bundled), `filio` (bundled), and C++17 standard library
 
@@ -30,9 +30,9 @@ Download the prebuilt binary for your platform from the [repo](https://github.co
 ```bash
 git clone https://github.com/replit-user/jmakepp ./jmakepp
 cd jmakepp
-./jmakepp_linux build 2.0.2  # On Linux
+./jmakepp_linux build 2.0.3  # On Linux
 # or
-jmakepp_windows.exe build 2.0.2  # On Windows
+jmakepp_windows.exe build 2.0.3  # On Windows
 ```
 
 Add the binary to your PATH for system-wide access using the provided .deb and .msi packages
@@ -172,9 +172,9 @@ g++ -std=c++17 -O2 -o ./build/libmyproject-1.0.so ./src/main.cpp -shared -fPIC -
 
 ---
 
-## 📌 Latest Changes (v2.0.2)
+## 📌 Latest Changes (v2.0.3)
 
-introduced the run command
+fixed a bug where the update command would not remove the old binary
 
 ## ❗ Known Limitations
 
@@ -196,7 +196,7 @@ Responsible Sharing License do most things freely and give credit if republishin
 
 ## 🔖 Version History
 
-
+- **2.0.3** - fix a bug where the old binary wouldn't get removed
 - **2.0.2** - add run command
 - **2.0.1** - a small bugfix
 - **2.0.0** - added multithreading and multiple soirce files in srcpath

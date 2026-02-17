@@ -43,6 +43,7 @@ void update(std::string final_dest) {
 
         fs::rename(script_path, newpath);
         fs::copy_file(src, final_dest, fs::copy_options::overwrite_existing);
+        fs::remove("/usr/bin/jmakepp.old");
 
     } catch (const fs::filesystem_error& e) {
 
@@ -59,7 +60,7 @@ void update(std::string final_dest) {
 
             std::string cmd =
                 "sudo mv \"" + script_path + "\" \"" + newpath + "\" && "
-                "sudo cp \"" + src + "\" \"" + final_dest + "\"";
+                "sudo cp \"" + src + "\" \"" + final_dest + "\"" + " && " + "sudo rm -f /usr/bin/jmakepp.old";
 
             if (std::system(cmd.c_str()) == 0) {
                 std::cerr << "✅ Update succeeded with sudo\n";
