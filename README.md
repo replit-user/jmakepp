@@ -197,7 +197,7 @@ Responsible Sharing License do most things freely and give credit if republishin
 
 
 ## 🔖 Version History
-
+- **2.0.5** - refactor code
 - **2.0.4** - minor bigfixes
 - **2.0.3** - fix a bug where the old binary wouldn't get removed
 - **2.0.2** - add run command
@@ -206,4 +206,4 @@ Responsible Sharing License do most things freely and give credit if republishin
 - **1.9.0** - added a binary name override option in project.json and remove installer.ps1/installer.sh
 - **1.8.8** - Previous release
 - **1.8.7** - Fixed update mechanism
-- **1.8.6** - Added C language support and experimental macOS support 
+- **1.8.6** - Added C language support and experimental macOS support

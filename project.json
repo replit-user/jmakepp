@@ -21,7 +21,8 @@
         "./src/project.cpp",
         "./src/installer.cpp",
         "./src/builder.cpp",
-        "./src/config.cpp"
+        "./src/config.cpp",
+        "./src/cmd.cpp"
     ],
     "type": "elf",
     "version": "2.0.4"

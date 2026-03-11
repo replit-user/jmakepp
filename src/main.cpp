@@ -7,6 +7,7 @@
 #include "../include/dauser/filio.hpp"
 #include "../include/dauser/cli.hpp"
 #include "../include/dauser/platform.hpp"
+#include "../include/dauser/cmd.hpp"
 #include <vector>
 
 int main(int argc, char* argv[]) {
@@ -49,7 +50,7 @@ int main(int argc, char* argv[]) {
                 std::filesystem::remove_all(buildpath_fs);
                 std::cout << "✅ Cleaned build directory\n";
             }
-            
+
             else {
                 std::cout << "⚠️ Build directory does not exist\n";
             }
