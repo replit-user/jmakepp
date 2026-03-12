@@ -172,11 +172,9 @@ g++ -std=c++17 -O2 -o ./build/libmyproject-1.0.so ./src/main.cpp -shared -fPIC -
 
 ---
 
-## 📌 Latest Changes (v2.0.4)
-
-fixed bugs
-  - fixed a permission issue after installing
-  - added a build.sh to easily build the project from source as a utility tool
+## 📌 Latest Changes (v2.0.5)
+refactor source code
+  - add cmd.cpp and cmd.hpp
 
 ## ❗ Known Limitations
 
