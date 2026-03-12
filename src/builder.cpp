@@ -1,6 +1,5 @@
 #include "../include/dauser/builder.hpp"
 #include "../include/dauser/config.hpp"
-#include "../include/dauser/platform.hpp"
 #include "../include/dauser/cmd.hpp"
 #include <iostream>
 #include <filesystem>
