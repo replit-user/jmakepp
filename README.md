@@ -2,7 +2,7 @@
 
 `jmake++` is a lightweight, zero-dependency build system for C++ projects, written in C++. It replaces complex systems like Make and CMake for small to mid-size projects with a single JSON configuration file and intuitive CLI.
 
-**Version:** `2.0.4`
+**Version:** `2.0.6`
 **Platforms:** Windows ✅ & Linux ✅  & MacOS ⚠️(needs to build from source, not tested)
 **Dependencies:** `g++`, `nlohmann/json` (bundled), `filio` (bundled), and C++17 standard library
 
@@ -172,9 +172,8 @@ g++ -std=c++17 -O2 -o ./build/libmyproject-1.0.so ./src/main.cpp -shared -fPIC -
 
 ---
 
-## 📌 Latest Changes (v2.0.5)
-refactor source code
-  - add cmd.cpp and cmd.hpp
+## 📌 Latest Changes (v2.0.6)
+remove an unused include
 
 ## ❗ Known Limitations
 

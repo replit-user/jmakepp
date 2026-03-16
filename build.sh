@@ -1,5 +1,5 @@
 cd bin && rm -f -r ./* && cd ..
-version="2.0.5"
+version="2.0.6"
 jmakepp build "$version"
 cd bin && mv ./*.exe ./jmakepp.exe && cd ..
 cd installers && ./package.sh && cd ..
