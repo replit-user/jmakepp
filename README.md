@@ -179,6 +179,8 @@ remove an unused include
 
 - macOS support is not currently maintained (C) support was added but is not actively tested
 - Only tested on Linux (x86_64) and windows x86_64
+- if using on macos it's likely that cross compilation is not supported
+- if using macos you must compile from source
 
 ---
 
