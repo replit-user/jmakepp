@@ -42,6 +42,7 @@ void compile_source(const std::string& source_file, const std::string& compiler,
 
 void build(std::string new_version) {
     json config = load_project_config();
+    int max_threads = config["max threads"];
     bool c = config["c"];
     std::string name = config["name"];
     std::string buildpath = config["buildpath"];
@@ -105,7 +106,7 @@ void build(std::string new_version) {
 
         // Compile each source file in parallel
         std::cout << "📦 Starting compilation for platform: " << platform << "\n";
-        for (size_t i = 0; i < src_files.size(); ++i) {
+        for (size_t i = 0; i < max_threads; ++i) {
             compilation_threads.emplace_back(
                 compile_source,
                 src_files[i],
