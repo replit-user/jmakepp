@@ -197,6 +197,7 @@ Responsible Sharing License do most things freely and give credit if republishin
 
 
 ## 🔖 Version History
+- **2.0.8** - fix a major bug with the max threads flag
 - **2.0.5** - refactor code
 - **2.0.4** - minor bigfixes
 - **2.0.3** - fix a bug where the old binary wouldn't get removed

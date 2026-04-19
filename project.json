@@ -7,6 +7,7 @@
         "./include/dauser",
         "./include/nlohmann"
     ],
+    "max threads": 9,
     "name": "jmakepp",
     "override binary name": true,
     "platforms": [
@@ -25,5 +26,5 @@
         "./src/cmd.cpp"
     ],
     "type": "elf",
-    "version": "2.0.7"
+    "version": "2.0.8"
 }

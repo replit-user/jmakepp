@@ -101,14 +101,12 @@ void build(std::string new_version) {
         fs::create_directories(fs::path(platform_build_dir));
 
         std::vector<std::string> includes = expand_includes(includepaths);
-        std::vector<std::thread> compilation_threads;
         std::vector<int> compilation_results(src_files.size(), 0);
 
-        // Compile each source file in parallel
+        // Compile each source file
         std::cout << "📦 Starting compilation for platform: " << platform << "\n";
-        for (size_t i = 0; i < max_threads; ++i) {
-            compilation_threads.emplace_back(
-                compile_source,
+        for (size_t i = 0; i < src_files.size(); ++i) {
+            compile_source(
                 src_files[i],
                 compiler,
                 std::ref(flags),
@@ -116,11 +114,6 @@ void build(std::string new_version) {
                 std::ref(platform_build_dir),
                 std::ref(compilation_results[i])
             );
-        }
-
-        // Wait for all compilation threads to complete
-        for (auto& thread : compilation_threads) {
-            thread.join();
         }
 
         // Check if all compilations succeeded
