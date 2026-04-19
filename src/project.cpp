@@ -21,7 +21,8 @@ void create_new_project(const std::string& path) {
   "platforms": ["linux","windows"],
   "c":false,
   "override binary name":false,
-  "binary name":""
+  "binary name":"",
+  "max threads":"3"
 })";
     proj.close();
 
