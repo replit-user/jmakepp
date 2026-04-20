@@ -17,7 +17,7 @@ std::mutex compilation_mutex;
 void compile_source(const std::string& source_file, const std::string& compiler,
     const std::vector<std::string>& flags,
     const std::vector<std::string>& includes,
-    const std::string& output_dir, int& result
+    const std::string& output_dir
 ) {
     std::string base_name = fs::path(source_file).stem().string();
     std::string obj_file = output_dir + base_name + ".o";
@@ -37,10 +37,43 @@ void compile_source(const std::string& source_file, const std::string& compiler,
         std::cout << "🔨 Compiling: " << source_file << "\n";
     }
 
-    result = run_cmd(command);
+    int result = run_cmd(command);
+}
+void compile_all(
+    const std::vector<std::string>& src_files,
+    const std::string& compiler,
+    const std::vector<std::string>& flags,
+    const std::vector<std::string>& includes,
+    const std::string& buildpath,
+    int max_threads
+) {
+    std::vector<std::thread> threads;
+
+    for (size_t i = 0; i < src_files.size(); ++i) {
+        // Limit active threads
+        while (threads.size() >= max_threads) {
+            threads.front().join();
+            threads.erase(threads.begin());
+        }
+
+        threads.emplace_back(
+            compile_source,
+            src_files[i],
+            compiler,
+            flags,
+            includes,
+            buildpath
+        );
+    }
+
+    // Join remaining threads
+    for (auto& t : threads) {
+        t.join();
+    }
 }
 
-void build(std::string new_version) {
+
+void build(std::string new_version){
     json config = load_project_config();
     int max_threads = config["max threads"];
     bool c = config["c"];
@@ -105,17 +138,7 @@ void build(std::string new_version) {
 
         // Compile each source file
         std::cout << "📦 Starting compilation for platform: " << platform << "\n";
-        for (size_t i = 0; i < src_files.size(); ++i) {
-            compile_source(
-                src_files[i],
-                compiler,
-                std::ref(flags),
-                std::ref(includes),
-                std::ref(platform_build_dir),
-                std::ref(compilation_results[i])
-            );
-        }
-
+        compile_all(src_files,compiler,flags,includes,platform_build_dir,max_threads);
         // Check if all compilations succeeded
         bool compilation_success = true;
         for (int result : compilation_results) {

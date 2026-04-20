@@ -1,14 +1,14 @@
 #!/bin/bash
 set -e
 
-VERSION=$(grep '"version"' ../project.json | sed 's/.*"version": "\([^"]*\)".*/\1/')
+VERSION=$(grep '"version"' ./project.json | sed 's/.*"version": "\([^"]*\)".*/\1/')
 
 echo "📦 Packaging jmakepp version $VERSION"
 
 # --- Create .deb package ---
 echo "🔨 Creating .deb package..."
 mkdir -p deb-package/DEBIAN deb-package/usr/bin
-cp ../bin/jmakepp_linux deb-package/usr/bin/jmakepp
+cp ./bin/jmakepp_linux deb-package/usr/bin/jmakepp
 chmod 755 deb-package/usr/bin/jmakepp
 
 cat > deb-package/DEBIAN/control << EOF
@@ -21,7 +21,7 @@ Depends: g++, mingw-w64
 Recommends: mingw-w64
 EOF
 
-dpkg-deb --build deb-package "jmakepp_${VERSION}_amd64.deb"
+dpkg-deb --build deb-package "./installers/jmakepp_${VERSION}_amd64.deb"
 rm -rf deb-package
 
 # --- Create .msi package (using wixl) ---
@@ -32,8 +32,8 @@ if ! command -v wixl >/dev/null 2>&1; then
   exit 1
 fi
 
-mkdir -p wix
-cat > wix/jmakepp.wxs << EOF
+mkdir -p ./installers/wix
+cat > ./installers/wix/jmakepp.wxs << EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <Product
@@ -43,15 +43,15 @@ cat > wix/jmakepp.wxs << EOF
     Version="${VERSION}"
     Manufacturer="replit-user"
     UpgradeCode="$(uuidgen)">
-    
+
     <Package InstallerVersion="500" Compressed="yes" InstallScope="perMachine"/>
     <MajorUpgrade DowngradeErrorMessage="A newer version of jmakepp is already installed."/>
-    
+
     <!-- Allow user to choose installation folder -->
     <Property Id="INSTALLDIR" Secure="yes" />
-    
+
     <Media Id="1" Cabinet="jmakepp.cab" EmbedCab="yes" />
-    
+
     <Feature Id="MainFeature" Title="jmakepp" Level="1">
       <ComponentRef Id="MainExecutable"/>
     </Feature>
@@ -64,15 +64,15 @@ cat > wix/jmakepp.wxs << EOF
 
     <DirectoryRef Id="INSTALLDIR">
       <Component Id="MainExecutable" Guid="$(uuidgen)">
-        <File Id="JmakeppExe" Source="../bin/jmakepp.exe" KeyPath="yes"/>
+        <File Id="JmakeppExe" Source="./bin/jmakepp.exe" KeyPath="yes"/>
       </Component>
     </DirectoryRef>
   </Product>
 </Wix>
 EOF
 
-wixl -o "jmakepp_${VERSION}_amd64.msi" wix/jmakepp.wxs
-rm -rf wix
+wixl -o "./installers/jmakepp_${VERSION}_amd64.msi" ./installers/wix/jmakepp.wxs
+rm -rf ./installers/wix
 
 
 
