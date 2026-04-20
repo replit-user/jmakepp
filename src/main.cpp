@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "../include/dauser/config.hpp"
 #include "../include/dauser/builder.hpp"
 #include "../include/dauser/installer.hpp"
@@ -45,8 +46,9 @@ int main(int argc, char* argv[]) {
             json config = load_project_config();
             std::string buildpath = config["buildpath"];
             std::filesystem::path buildpath_fs = buildpath;
-            if (std::filesystem::exists(buildpath_fs)) {
-                std::filesystem::remove_all(buildpath_fs);
+            if (std::filesystem::exists(buildpath_fs) && buildpath != "") {
+                std::string cmd = ((std::string)"rm -rf ") + buildpath + "/**";
+                run_cmd(cmd);
                 std::cout << "✅ Cleaned build directory\n";
             }
 

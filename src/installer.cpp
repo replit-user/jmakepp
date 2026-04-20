@@ -1,11 +1,13 @@
 #include "../include/dauser/installer.hpp"
+#include "../include/dauser/config.hpp"
 #include <filesystem>
 #include <iostream>
 
 namespace fs = std::filesystem;
 
 void install_headers(const std::string& from_path) {
-    fs::create_directories("include");
+    json config = load_project_config();
+    fs::create_directories(config["includepaths"]);
     fs::path source = fs::absolute(from_path);
 
     if (!fs::exists(source)) {
