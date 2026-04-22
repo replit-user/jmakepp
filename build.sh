@@ -1,4 +1,4 @@
-version=2.0.10
+version=2.0.11
 jmakepp build $version
 mv ./bin/*.exe ./bin/jmakepp.exe
 ./installers/package.sh

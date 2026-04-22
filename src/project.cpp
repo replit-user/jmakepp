@@ -22,7 +22,7 @@ void create_new_project(const std::string& path) {
   "c":false,
   "override binary name":false,
   "binary name":"",
-  "max threads":"3"
+  "max threads":3
 })";
     proj.close();
 

@@ -2,7 +2,7 @@
 
 `jmake++` is a lightweight, zero-dependency build system for C++ projects, written in C++. It replaces complex systems like Make and CMake for small to mid-size projects with a single JSON configuration file and intuitive CLI.
 
-**Version:** `2.0.10`
+**Version:** `2.0.11`
 **Platforms:** Windows ✅ & Linux ✅  & MacOS ⚠️(needs to build from source, not tested)
 **Dependencies:** `g++`, `nlohmann/json` (bundled), `filio` (bundled), and C++17 standard library
 
@@ -173,8 +173,8 @@ g++ -std=c++17 -O2 -o ./build/libmyproject-1.0.so ./src/main.cpp -shared -fPIC -
 
 ---
 
-## 📌 Latest Changes (v2.0.7)
-add max threads field
+## 📌 Latest Changes (v2.0.11)
+bugfix
 
 ## ❗ Known Limitations
 
@@ -197,6 +197,7 @@ Responsible Sharing License do most things freely and give credit if republishin
 
 
 ## 🔖 Version History
+- **2.0.11** - fix a major bug where by default max threads was a string instead of an integer
 - **2.0.10** - fix two bugs: one where clean would delete the folder itself, and another where install would copy a header to a hard coded path instead of looking at the config
 - **2.0.9** - fix a wierd bug where max_threads didn't work
 - **2.0.8** - fix a major bug with the max threads flag
