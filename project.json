@@ -1,30 +1,24 @@
 {
-    "binary name": "jmakepp",
-    "buildpath": "./bin/",
-    "c": false,
-    "flags": "-std=c++17 -O2 -static-libgcc -static-libstdc++",
-    "includepaths": [
-        "./include/dauser",
-        "./include/nlohmann"
-    ],
-    "max threads": 9,
-    "name": "jmakepp",
-    "override binary name": true,
-    "platforms": [
-        "windows",
-        "linux"
-    ],
-    "srcpath": [
-        "./src/main.cpp",
-        "./src/updater.cpp",
-        "./src/filio.cpp",
-        "./src/cli.cpp",
-        "./src/project.cpp",
-        "./src/installer.cpp",
-        "./src/builder.cpp",
-        "./src/config.cpp",
-        "./src/cmd.cpp"
-    ],
-    "type": "elf",
-    "version": "2.0.11"
+  "binary name": "jmakepp",
+  "buildpath": "./bin/",
+  "c": false,
+  "flags": "-std=c++17 -O2 -static-libgcc -static-libstdc++",
+  "includepaths": ["./include/dauser", "./include/nlohmann"],
+  "max threads": 9,
+  "name": "jmakepp",
+  "override binary name": true,
+  "platforms": ["windows", "linux"],
+  "srcpath": [
+    "./src/main.cpp",
+    "./src/updater.cpp",
+    "./src/filio.cpp",
+    "./src/cli.cpp",
+    "./src/project.cpp",
+    "./src/installer.cpp",
+    "./src/builder.cpp",
+    "./src/config.cpp",
+    "./src/cmd.cpp"
+  ],
+  "type": "elf",
+  "version": "2.1.0-beta+1"
 }

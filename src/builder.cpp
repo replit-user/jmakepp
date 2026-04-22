@@ -48,14 +48,12 @@ void compile_all(
     int max_threads
 ) {
     std::vector<std::thread> threads;
-
     for (size_t i = 0; i < src_files.size(); ++i) {
         // Limit active threads
         while (threads.size() >= max_threads) {
             threads.front().join();
             threads.erase(threads.begin());
         }
-
         threads.emplace_back(
             compile_source,
             src_files[i],
@@ -86,6 +84,9 @@ void build(std::string new_version){
     std::vector<std::string> includepaths = config.value("includepaths", std::vector<std::string>{"./include/*"});
     std::string config_version = config["version"];
     std::vector<std::string> flags;
+    if(new_version == ""){
+        new_version = config_version;
+    }
 
     if (config["flags"].is_string()) {
         std::istringstream iss(config["flags"].get<std::string>());

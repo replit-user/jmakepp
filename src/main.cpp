@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <functional>
 #include "../include/dauser/config.hpp"
 #include "../include/dauser/builder.hpp"
 #include "../include/dauser/installer.hpp"
@@ -20,11 +21,15 @@ int main(int argc, char* argv[]) {
 
     try {
         if (cmd == "build") {
-            if (argc < 3) {
-                std::cout << "Usage: jmakepp build <new_version>";
+            if (argc < 2) {
+                std::cout << "Usage: jmakepp build {new_version}";
                 return 1;
             }
-            build(argv[2]);
+            if(argc < 3){
+                build(argv[2]);
+            }else{
+                build("");
+            }
         } else if (cmd == "new") {
             if (argc < 3) {
                 std::cout << "Usage: jmakepp new <path>\n";

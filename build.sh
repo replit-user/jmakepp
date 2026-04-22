@@ -1,5 +1,4 @@
-version=2.0.11
-jmakepp build $version
+jmakepp build
 mv ./bin/*.exe ./bin/jmakepp.exe
 ./installers/package.sh
 gpg -b ./bin/jmakepp_linux && gpg --verify ./bin/jmakepp_linux.sig ./bin/jmakepp_linux && cd ..

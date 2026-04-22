@@ -27,12 +27,14 @@
 
 Download the prebuilt binary for your platform from the [repo](https://github.com/replit-user/jmakepp/bin) page, or build from source:
 
+note: you need version 2.1.0-beta+1 or newer to build from source
+
 ```bash
 git clone https://github.com/replit-user/jmakepp ./jmakepp
 cd jmakepp
-./jmakepp_linux build 2.0.4  # On Linux
+./bin/jmakepp_linux build  # On Linux
 # or
-jmakepp_windows.exe build 2.0.4  # On Windows
+./bin/jmakepp_windows.exe build  # On Windows
 ```
 
 Add the binary to your PATH for system-wide access using the provided .deb and .msi packages
@@ -41,7 +43,7 @@ Add the binary to your PATH for system-wide access using the provided .deb and .
 
 ```bash
 jmakepp new <path>      # Create a new project in the given directory
-jmakepp build <version> # Build the project and update version in project.json
+jmakepp build {version} # Build the project and update version in project.json if the version changed
 jmakepp install <path>  # Install .h/.hpp files to ./include
 jmakepp clean           # Remove the ./build directory
 jmakepp version         # Show jmake++ version
@@ -88,7 +90,8 @@ You'll see:
   ],
   "c":false,
   "override binary name":false,
-  "binary name":""
+  "binary name":"",
+  "max threads":3
 }
 ```
 
@@ -171,10 +174,12 @@ For shared libraries:
 g++ -std=c++17 -O2 -o ./build/libmyproject-1.0.so ./src/main.cpp -shared -fPIC -I./include
 ```
 
+or change the type in project.json to shared 
+
 ---
 
-## 📌 Latest Changes (v2.0.11)
-bugfix
+## 📌 Latest Changes (v2.1.0-beta+1)
+bugfixes and jmakepp build with no arguments using the version in project.json
 
 ## ❗ Known Limitations
 
@@ -197,12 +202,7 @@ Responsible Sharing License do most things freely and give credit if republishin
 
 
 ## 🔖 Version History
-- **2.0.11** - fix a major bug where by default max threads was a string instead of an integer
-- **2.0.10** - fix two bugs: one where clean would delete the folder itself, and another where install would copy a header to a hard coded path instead of looking at the config
-- **2.0.9** - fix a wierd bug where max_threads didn't work
-- **2.0.8** - fix a major bug with the max threads flag
-- **2.0.5** - refactor code
-- **2.0.4** - minor bigfixes
+- **2.1.0-beta** - the most recent version, beta release
 - **2.0.3** - fix a bug where the old binary wouldn't get removed
 - **2.0.2** - add run command
 - **2.0.1** - a small bugfix
