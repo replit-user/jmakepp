@@ -1,3 +1,4 @@
+jmakepp clean
 jmakepp build
 mv ./bin/*.exe ./bin/jmakepp.exe
 ./installers/package.sh

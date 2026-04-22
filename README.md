@@ -202,7 +202,8 @@ Responsible Sharing License do most things freely and give credit if republishin
 
 
 ## 🔖 Version History
-- **2.1.0-beta** - the most recent version, beta release
+- **2.1.0-beta+2** - beta release, bugfix and add jmakepp build with no arguments
+- **2.1.0-beta+1** - beta release, bugfix
 - **2.0.3** - fix a bug where the old binary wouldn't get removed
 - **2.0.2** - add run command
 - **2.0.1** - a small bugfix

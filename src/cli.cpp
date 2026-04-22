@@ -2,7 +2,7 @@
 #include <iostream>
 
 std::string get_version() {
-    return "2.1.0-beta+1";
+    return "2.1.0-beta+2";
 }
 
 void show_help() {
