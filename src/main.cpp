@@ -1,6 +1,6 @@
+#include <exception>
 #include <iostream>
 #include <string>
-#include <functional>
 #include "../include/dauser/config.hpp"
 #include "../include/dauser/builder.hpp"
 #include "../include/dauser/installer.hpp"
@@ -25,9 +25,10 @@ int main(int argc, char* argv[]) {
                 std::cout << "Usage: jmakepp build {new_version}";
                 return 1;
             }
-            if(argc < 2){
-                build(argv[2]);
-            }else{
+            try{
+                std::string temp = argv[2];
+                build(temp);
+            }catch(const std::exception& e){
                 build("");
             }
         } else if (cmd == "new") {
