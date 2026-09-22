@@ -1,0 +1,122 @@
+# Responsible Sharing License v1.0
+
+This license governs the use, modification, and redistribution of jmake++ (“the Software”) and any associated mods.
+
+---
+
+## **Section 1: Software Itself**
+
+subsection 1: the do's
+
+1.  Modify your own copy of the Software.
+    
+2.  Republish your modified Software to GitHub, Bitbucket, or GitLab with proper credit to the original author.
+    
+3.  View, study, or reverse-engineer the source code using any means (Google, AI, etc.).
+    
+
+subsection 2: the don'ts
+
+1.  Republish the Software without giving credit.
+    
+2.  Republish a malicious or harmful version of the Software.
+    
+3.  Republish the Software anywhere other than GitHub, Bitbucket, or GitLab, **except** if the modified version is already published on one of these platforms.
+    
+
+---
+
+## **Section 2: Mods** *(applies only if your project supports mods)*
+
+subsection 1: the do's
+
+1.  Create your own mods.
+    
+2.  Sell or publish your mods freely.
+    
+3.  Publish modified versions of built-in mods with proper credit to the original author.
+    
+
+subsection 2: the don'ts
+
+1.  Resell or distribute the Software bundled with your mod as the default configuration.
+    
+
+---
+
+## **Section 3: Past Versions**
+
+Past versions of the Software are exempt from most rules in this license. The following still applies:
+
+1.  You may NOT publish or sell a malicious version of a past release.
+    
+2.  You must give proper credit to the original author when publishing or selling past versions.
+    
+
+---
+
+## **Section 4: Monetization**
+
+subsection 1: the do's
+
+1.  Republish or sell a modified version of the Software with proper credit to the original author.
+    
+
+subsection 2: the don'ts
+
+1.  Republish or sell the original, unmodified Software.
+    
+2.  Publish a malicious version of the Software.
+    
+
+> This license **does not entitle the original author to any revenue** from modified versions, third-party merchandise, or any other third-party products derived from the Software.
+
+---
+
+## **Section 5: Warranties**
+
+The Software is provided **as-is**. After download, any damage or issues are your responsibility.
+
+1.   No warranties are issued.
+    
+2.   If the Software remains hosted on GitHub, Bitbucket, or GitLab, it may be redownloaded at no additional cost.
+
+## section 6: what this license covers
+subsection 1: code
+as established this license is able to cover code compiled or otherwise but a requirement for being covered by the responsible sharing license is being
+a. open source
+b. on a site dedicated to open source projects eg github or gitlab
+subsection 2: data
+any applicable digital data may be covered, when I say applicable it culd be a jar file which isn't compiled but not interpereted as long as it is related to code, 
+and yes this could mean your game state for a python buisness simulation can be covered under the responsible sharing license
+subsection 3: non-code-non data items
+any asset that is not code and not data may not be covered under this license digital or otherwise.
+
+
+The term “malicious” is ambiguous. For this license, Software is considered malicious if it meets any one of the following criteria, regardless of intent:
+
+1. It actively tries to harm, delete, or modify data, or compromise data integrity.
+2. It actively tries to modify its own code or the code of other programs on disk.
+3. It compromises system or application security.
+4. It is flagged by default antivirus tools in Windows, Ubuntu Linux, or Google Drive.
+5. Any action is taken without the user’s knowledge or permission.
+
+Only one of these points needs to be met for the Software to be considered malicious.
+
+Examples of malicious software include, but are not limited to:
+- Wannacry ransomware
+- An assembly program intended to be loaded at a specific memory address but loaded elsewhere, attempting to access another program’s memory
+- An MP3 file edited to execute arbitrary code
+- A Python script that deletes all files in a directory
+
+proper credit is another ambiguous term, for this license the minimums for proper credit will be defined as:
+
+1. in a readme at the bottom seperated from any big chunks of text and if it's at the very bottom then it is no more than 3 newlines down
+2. in a code comment seperated from other comments THIS MINIMUM ONLY APPLIES TO PROJECTS MEANT TO BE RUN WITH AN INTERPERETER
+3. a link to the original project at the top of the readme
+4. a dedicated file containing the link to the original projects source code
+5. in a credits section of the README
+6. the source code of a project inside of an 'original' folder with an added comment at the very top of the source code
+7. a folder with the authors name or alias which can be used or unused
+8. the authors alias or name being in the title of the project
+at least 2 acceptable credit methods must be present for the credit to be considered proficient

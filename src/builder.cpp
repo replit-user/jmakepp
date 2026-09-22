@@ -1,0 +1,210 @@
+#include "../include/dauser/builder.hpp"
+#include "../include/dauser/config.hpp"
+#include "../include/dauser/cmd.hpp"
+#include "../include/dauser/filio.hpp"
+#include <iostream>
+#include <filesystem>
+#include <fstream>
+#include <thread>
+#include <vector>
+#include <mutex>
+#include <sstream>
+
+namespace fs = std::filesystem;
+
+std::mutex compilation_mutex;
+
+// Compile a single source file to an object file
+void compile_source(const std::string& source_file, const std::string& compiler,
+    const std::vector<std::string>& flags,
+    const std::vector<std::string>& includes,
+    const std::string& output_dir
+) {
+    std::string base_name = fs::path(source_file).stem().string();
+    std::string obj_file = output_dir + base_name + ".o";
+
+    std::string command = compiler + " -c -fPIC -o \"" + obj_file + "\" \"" + source_file + "\"";
+
+    for (const auto& flag : flags) {
+        command += " \"" + flag + "\"";
+    }
+
+    for (const auto& inc : includes) {
+        command += " \"" + inc + "\"";
+    }
+
+    {
+        std::lock_guard<std::mutex> lock(compilation_mutex);
+        std::cout << "🔨 Compiling: " << source_file << "\n";
+    }
+
+    int result = run_cmd(command);
+}
+void compile_all(
+    const std::vector<std::string>& src_files,
+    const std::string& compiler,
+    const std::vector<std::string>& flags,
+    const std::vector<std::string>& includes,
+    const std::string& buildpath,
+    int max_threads
+) {
+    std::vector<std::thread> threads;
+    for (size_t i = 0; i < src_files.size(); ++i) {
+        // Limit active threads
+        while (threads.size() >= max_threads) {
+            threads.front().join();
+            threads.erase(threads.begin());
+        }
+        threads.emplace_back(
+            compile_source,
+            src_files[i],
+            compiler,
+            flags,
+            includes,
+            buildpath
+        );
+    }
+
+    // Join remaining threads
+    for (auto& t : threads) {
+        t.join();
+    }
+}
+
+
+void build(std::string new_version){
+    json config = load_project_config();
+    int max_threads = config["max threads"];
+    bool c = config["c"];
+    std::string name = config["name"];
+    std::string buildpath = config["buildpath"];
+    std::vector<std::string> src_files = config["srcpath"].is_array() ?
+    config["srcpath"].get<std::vector<std::string>>() :
+    std::vector<std::string>{config["srcpath"].get<std::string>()};
+    std::string type = config["type"];
+    std::vector<std::string> includepaths = config.value("includepaths", std::vector<std::string>{"./include/*"});
+    std::string config_version = config["version"];
+    std::vector<std::string> flags;
+    if(new_version == ""){
+        new_version = config_version;
+    }
+
+    if (config["flags"].is_string()) {
+        std::istringstream iss(config["flags"].get<std::string>());
+        std::string flag;
+        while (iss >> flag) flags.push_back(flag);
+    } else if (config["flags"].is_array()) {
+        flags = config["flags"].get<std::vector<std::string>>();
+    }
+    bool override_name = config["override binary name"];
+    std::string override = config["binary name"];
+
+    fs::create_directories(fs::path(buildpath));
+    std::vector<std::string> platforms = config.value("platforms", std::vector<std::string>{"linux"});
+    bool all_success = true;
+    try {
+        config["version"] = new_version;
+        std::ofstream out("project.json");
+        out << config.dump(4);
+        std::cout << "🔄 Updated version to: " << new_version << "\n";
+    } catch(std::exception) {
+        std::cout << "⚠️ version not updated due to an unexpected error";
+    }
+
+    for (const std::string& platform : platforms) {
+        std::string compiler, extension;
+
+        if (platform == "linux") {
+            compiler = c ? "gcc" : "g++";
+            extension = (type == "shared") ? ".so" : "";
+        }
+        else if (platform == "windows") {
+            compiler = c ? "x86_64-w64-mingw32-gcc" : "x86_64-w64-mingw32-g++";
+            extension = (type == "shared") ? ".dll" : ".exe";
+        }
+        else if (platform == "macos") {
+            compiler = c ? "clang" : "clang++";
+            extension = (type == "shared") ? ".dylib" : "";
+        }
+        else {
+            std::cerr << "⚠️ Unsupported platform: " << platform << "\n";
+            continue;
+        }
+
+        std::string platform_build_dir = buildpath + platform + "/";
+        fs::create_directories(fs::path(platform_build_dir));
+
+        std::vector<std::string> includes = expand_includes(includepaths);
+
+        // Compile each source file
+        std::cout << "📦 Starting compilation for platform: " << platform << "\n";
+        compile_all(src_files,compiler,flags,includes,platform_build_dir,max_threads);
+
+        if (filio::extra::file_exists(fs::path(platform_build_dir))) {
+            std::cout << "❌ Build failed for platform: " << platform << " (compilation stage)\n";
+            all_success = false;
+            continue;
+        }
+
+        // Link all object files together
+        std::string outname = buildpath + name + "-" + new_version + "-" + platform + extension;
+        if (override_name) {
+            outname = buildpath + override + '_' + platform;
+        }
+
+        std::string link_command = compiler + " -o \"" + outname + "\"";
+
+        // Add all compiled object files
+        for (const auto& src_file : src_files) {
+            std::string base_name = fs::path(src_file).stem().string();
+            std::string obj_file = platform_build_dir + base_name + ".o";
+            link_command += " \"" + obj_file + "\"";
+        }
+
+        // Apply platform-specific shared library flags
+        if (type == "shared") {
+            if (platform == "macos") {
+                link_command += " -dynamiclib";
+            } else {
+                link_command += " -shared";
+            }
+        }
+
+        for (const auto& flag : flags) {
+            link_command += " \"" + flag + "\"";
+        }
+
+        std::cout << "🔗 Linking: " << outname << "\n";
+        int link_result = run_cmd(link_command);
+
+        if (link_result != 0) {
+            std::cout << "❌ Build failed for platform: " << platform << " (linking stage)\n";
+            all_success = false;
+        } else {
+            std::cout << "✅ Built for " << platform << " -> " << outname << "\n";
+        }
+
+        // Clean up object files (main thread)
+        std::cout << "🧹 Cleaning up temporary object files...\n";
+        for (const auto& src_file : src_files) {
+            std::string base_name = fs::path(src_file).stem().string();
+            std::string obj_file = platform_build_dir + base_name + ".o";
+            try {
+                if (fs::exists(obj_file)) {
+                    fs::remove(obj_file);
+                }
+            } catch (const std::exception& e) {
+                std::cerr << "⚠️ Failed to delete " << obj_file << ": " << e.what() << "\n";
+            }
+        }
+
+        // Clean up empty platform directory if it exists and is empty
+        try {
+            if (fs::exists(platform_build_dir) && fs::is_empty(platform_build_dir)) {
+                fs::remove(platform_build_dir);
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "⚠️ Failed to clean up directory: " << e.what() << "\n";
+        }
+    }
+}
