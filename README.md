@@ -91,7 +91,8 @@ You'll see:
   "c":false,
   "override binary name":false,
   "binary name":"",
-  "max threads":3
+  "max threads":3,
+  "less program output":true
 }
 ```
 
