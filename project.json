@@ -17,13 +17,13 @@
     "srcpath": [
         "./src/main.cpp",
         "./src/updater.cpp",
-        "./src/filio.cpp",
         "./src/cli.cpp",
         "./src/project.cpp",
         "./src/installer.cpp",
         "./src/builder.cpp",
         "./src/config.cpp",
-        "./src/cmd.cpp"
+        "./src/cmd.cpp",
+        "./include/dauser/filio.cpp"
     ],
     "type": "elf",
     "version": "2.1.1-bugfix"

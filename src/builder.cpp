@@ -140,7 +140,7 @@ void build(std::string new_version){
         std::cout << "📦 Starting compilation for platform: " << platform << "\n";
         compile_all(src_files,compiler,flags,includes,platform_build_dir,max_threads);
 
-        if (filio::extra::file_exists(fs::path(platform_build_dir))) {
+        if (!filio::extra::file_exists(fs::path(platform_build_dir))) {
             std::cout << "❌ Build failed for platform: " << platform << " (compilation stage)\n";
             all_success = false;
             continue;

@@ -2,7 +2,7 @@
 #include <iostream>
 
 std::string get_version() {
-    filio::read("../project.json")
+    return "2.1.1-bugfix";
 }
 
 void show_help() {

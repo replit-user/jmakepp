@@ -26,28 +26,26 @@ int main(int argc, char* argv[]) {
 
 
         if (cmd == "build") {
-            std::cout << "Usage: jmakepp build {new_version}";
-            return 1;
-            }
             try{
                 std::string temp = argv[2];
                 build(temp);
             }catch(const std::exception& e){
                 build("");
             }
-            if (cmd == "new") {
-            if (argc < 3) {
-                std::cout << "Usage: jmakepp new <path>\n";
-                return 1;
-            }
-            create_new_project(argv[2]);
-        } else if (cmd == "install") {
+        }else if (cmd == "install") {
             if (argc < 3) {
                 std::cout << "Usage: jmakepp install <path>\n";
                 return 1;
             }
             install_headers(argv[2]);
-        } else if (cmd == "help") {
+        }else if (cmd == "new") {
+        if (argc < 3) {
+            std::cout << "Usage: jmakepp new <path>\n";
+            return 1;
+        }
+        create_new_project(argv[2]);
+    }
+        else if (cmd == "help") {
             show_help();
         } else if(cmd == "version") {
             std::cout << "Version: " << get_version() << "\n";
@@ -79,8 +77,7 @@ int main(int argc, char* argv[]) {
                     std::string name = config["name"];
                     run_cmd(buildpath + name + "-" + version + (is_windows?"-windows.exe":is_macos?"-macos":"-linux"));
                 }
-            }
-        else {
+            }else {
             std::cout << "❌ Unknown command: " << cmd << "\n";
             return 1;
         }
