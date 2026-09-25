@@ -7,6 +7,7 @@
         "./include/dauser",
         "./include/nlohmann"
     ],
+    "less program output": false,
     "max threads": 9,
     "name": "jmakepp",
     "override binary name": true,
@@ -26,5 +27,5 @@
         "./include/dauser/filio.cpp"
     ],
     "type": "elf",
-    "version": "2.1.1-bugfix"
+    "version": "2.2.2"
 }

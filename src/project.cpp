@@ -22,7 +22,8 @@ void create_new_project(const std::string& path) {
   "c":false,
   "override binary name":false,
   "binary name":"",
-  "max threads":3
+  "max threads":3,
+  "less program output":false
 })";
     proj.close();
 
@@ -33,8 +34,7 @@ void create_new_project(const std::string& path) {
         pos += 2;
     }
     std::ofstream maincpp(path + "/src/main.cpp");
-    maincpp << "#include <iostream>\nint main() {\n    std::cout << \"Hello from " << abs_path << "!\\n\";\n    return 0;\n}\n";
-    maincpp.close();
+    maincpp << "int main(int argc,char** argv){return 0;}";
 
     std::cout << "✅ Project created at: " << path << "\n";
 }

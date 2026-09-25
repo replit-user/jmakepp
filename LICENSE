@@ -9,20 +9,20 @@ This license governs the use, modification, and redistribution of jmake++ (“th
 subsection 1: the do's
 
 1.  Modify your own copy of the Software.
-    
-2.  Republish your modified Software to GitHub, Bitbucket, or GitLab with proper credit to the original author.
-    
-3.  View, study, or reverse-engineer the source code using any means (Google, AI, etc.).
-    
 
-subsection 2: the don'ts
+2.  Republish your modified Software to GitHub, Bitbucket, or GitLab with proper credit to the original author.
+
+3.  View, study, or reverse-engineer the source code using any means (Google, AI, etc.).
+
+
+subsection 2: the dont's
 
 1.  Republish the Software without giving credit.
-    
+
 2.  Republish a malicious or harmful version of the Software.
-    
+
 3.  Republish the Software anywhere other than GitHub, Bitbucket, or GitLab, **except** if the modified version is already published on one of these platforms.
-    
+
 
 ---
 
@@ -31,16 +31,16 @@ subsection 2: the don'ts
 subsection 1: the do's
 
 1.  Create your own mods.
-    
-2.  Sell or publish your mods freely.
-    
-3.  Publish modified versions of built-in mods with proper credit to the original author.
-    
 
-subsection 2: the don'ts
+2.  Sell or publish your mods freely.
+
+3.  Publish modified versions of built-in mods with proper credit to the original author.
+
+
+subsection 2: the dont's
 
 1.  Resell or distribute the Software bundled with your mod as the default configuration.
-    
+
 
 ---
 
@@ -49,9 +49,9 @@ subsection 2: the don'ts
 Past versions of the Software are exempt from most rules in this license. The following still applies:
 
 1.  You may NOT publish or sell a malicious version of a past release.
-    
+
 2.  You must give proper credit to the original author when publishing or selling past versions.
-    
+
 
 ---
 
@@ -60,14 +60,14 @@ Past versions of the Software are exempt from most rules in this license. The fo
 subsection 1: the do's
 
 1.  Republish or sell a modified version of the Software with proper credit to the original author.
-    
 
-subsection 2: the don'ts
+
+subsection 2: the dont's
 
 1.  Republish or sell the original, unmodified Software.
-    
+
 2.  Publish a malicious version of the Software.
-    
+
 
 > This license **does not entitle the original author to any revenue** from modified versions, third-party merchandise, or any other third-party products derived from the Software.
 
@@ -78,7 +78,7 @@ subsection 2: the don'ts
 The Software is provided **as-is**. After download, any damage or issues are your responsibility.
 
 1.   No warranties are issued.
-    
+
 2.   If the Software remains hosted on GitHub, Bitbucket, or GitLab, it may be redownloaded at no additional cost.
 
 ## section 6: what this license covers
@@ -87,7 +87,7 @@ as established this license is able to cover code compiled or otherwise but a re
 a. open source
 b. on a site dedicated to open source projects eg github or gitlab
 subsection 2: data
-any applicable digital data may be covered, when I say applicable it culd be a jar file which isn't compiled but not interpereted as long as it is related to code, 
+any applicable digital data may be covered, when I say applicable it culd be a jar file which isn't compiled but not interpereted as long as it is related to code,
 and yes this could mean your game state for a python buisness simulation can be covered under the responsible sharing license
 subsection 3: non-code-non data items
 any asset that is not code and not data may not be covered under this license digital or otherwise.

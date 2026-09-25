@@ -2,7 +2,7 @@
 
 `jmake++` is a lightweight, zero-dependency build system for C++ projects, written in C++. It replaces complex systems like Make and CMake for small to mid-size projects with a single JSON configuration file and intuitive CLI.
 
-**Version:** `2.1.1-bugfix`
+**Version:** `2.2.2`
 **Platforms:** Windows ✅ & Linux ✅  & MacOS ⚠️(needs to build from source, not tested)
 **Dependencies:** `g++`, `nlohmann/json` (bundled), `filio` (bundled), and C++17 standard library
 
@@ -92,7 +92,7 @@ You'll see:
   "override binary name":false,
   "binary name":"",
   "max threads":3,
-  "less program output":true
+  "less program output":false
 }
 ```
 
@@ -111,6 +111,7 @@ You'll see:
 |`override binary name`|`boolean`|`whether or not to override the default binary naming`|
 |`binary name`|`string`|`if overriding the binary name, tha binary name to use`|
 |`max threads`|`integer`|`maximum threads to use`|
+|`less program output`|`bool`|`whether or not to reduce output from the program, only applies to the build and clean operations`|
 
 ---
 
@@ -179,8 +180,8 @@ or change the type in project.json to shared
 
 ---
 
-## 📌 Latest Changes (2.1.1-bugfix)
-bugfix
+## 📌 Latest Changes (2.2.2)
+source code cleanup and macos update warning
 
 ## ❗ Known Limitations
 
@@ -203,6 +204,8 @@ Responsible Sharing License do most things freely and give credit if republishin
 
 
 ## 🔖 Version History
+-**2.2.2** - clean up source code and macos update warning
+-**2.2.1** - bugfix plus add less program output config option
 - **2.2.1-bugfix** - beta release, bugfix
 - **2.1.0-beta+3** - beta release, bugfix
 - **2.1.0-beta+2** - beta release, bugfix and add jmakepp build with no arguments

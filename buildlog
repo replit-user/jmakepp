@@ -1,0 +1,27 @@
+🔄 Updated version to: 2.2.2
+📦 Starting compilation for platform: windows
+🔨 Compiling: ./src/main.cpp
+🔨 Compiling: ./src/cli.cpp
+🔨 Compiling: ./src/updater.cpp
+🔨 Compiling: ./src/installer.cpp
+🔨 Compiling: ./src/project.cpp
+🔨 Compiling: ./src/builder.cpp
+🔨 Compiling: ./src/config.cpp
+🔨 Compiling: ./src/cmd.cpp
+🔨 Compiling: ./include/dauser/filio.cpp
+🔗 Linking: ./bin/jmakepp_windows
+✅ Built for windows -> ./bin/jmakepp_windows
+🧹 Cleaning up temporary object files...
+📦 Starting compilation for platform: linux
+🔨 Compiling: ./src/updater.cpp
+🔨 Compiling: ./src/main.cpp
+🔨 Compiling: ./src/cli.cpp
+🔨 Compiling: ./src/project.cpp
+🔨 Compiling: ./src/installer.cpp
+🔨 Compiling: ./src/builder.cpp
+🔨 Compiling: ./src/config.cpp
+🔨 Compiling: ./src/cmd.cpp
+🔨 Compiling: ./include/dauser/filio.cpp
+🔗 Linking: ./bin/jmakepp_linux
+✅ Built for linux -> ./bin/jmakepp_linux
+🧹 Cleaning up temporary object files...

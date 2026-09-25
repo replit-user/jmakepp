@@ -84,6 +84,7 @@ void build(std::string new_version){
     std::string type = config["type"];
     std::vector<std::string> includepaths = config.value("includepaths", std::vector<std::string>{"./include/*"});
     std::string config_version = config["version"];
+    bool quiet = config["less program output"];
     std::vector<std::string> flags;
     if(new_version == ""){
         new_version = config_version;
@@ -106,9 +107,9 @@ void build(std::string new_version){
         config["version"] = new_version;
         std::ofstream out("project.json");
         out << config.dump(4);
-        std::cout << "🔄 Updated version to: " << new_version << "\n";
+        if(!quiet){std::cout << "🔄 Updated version to: " << new_version << "\n";}
     } catch(std::exception) {
-        std::cout << "⚠️ version not updated due to an unexpected error";
+        if(!quiet){std::cout << "⚠️ version not updated due to an unexpected error";}
     }
 
     for (const std::string& platform : platforms) {
@@ -127,7 +128,7 @@ void build(std::string new_version){
             extension = (type == "shared") ? ".dylib" : "";
         }
         else {
-            std::cerr << "⚠️ Unsupported platform: " << platform << "\n";
+            if(!quiet){std::cerr << "⚠️ Unsupported platform: " << platform << "\n";}
             continue;
         }
 
@@ -137,11 +138,11 @@ void build(std::string new_version){
         std::vector<std::string> includes = expand_includes(includepaths);
 
         // Compile each source file
-        std::cout << "📦 Starting compilation for platform: " << platform << "\n";
+        if(!quiet){std::cout << "📦 Starting compilation for platform: " << platform << "\n";}
         compile_all(src_files,compiler,flags,includes,platform_build_dir,max_threads);
 
         if (!filio::extra::file_exists(fs::path(platform_build_dir))) {
-            std::cout << "❌ Build failed for platform: " << platform << " (compilation stage)\n";
+            if(!quiet){std::cout << "❌ Build failed for platform: " << platform << " (compilation stage)\n";}
             all_success = false;
             continue;
         }
@@ -174,18 +175,18 @@ void build(std::string new_version){
             link_command += " \"" + flag + "\"";
         }
 
-        std::cout << "🔗 Linking: " << outname << "\n";
+        if(!quiet){std::cout << "🔗 Linking: " << outname << "\n";}
         int link_result = run_cmd(link_command);
 
         if (link_result != 0) {
-            std::cout << "❌ Build failed for platform: " << platform << " (linking stage)\n";
+            if(!quiet){std::cout << "❌ Build failed for platform: " << platform << " (linking stage)\n";}
             all_success = false;
         } else {
-            std::cout << "✅ Built for " << platform << " -> " << outname << "\n";
+            if(!quiet){std::cout << "✅ Built for " << platform << " -> " << outname << "\n";}
         }
 
         // Clean up object files (main thread)
-        std::cout << "🧹 Cleaning up temporary object files...\n";
+        if(!quiet){std::cout << "🧹 Cleaning up temporary object files...\n";}
         for (const auto& src_file : src_files) {
             std::string base_name = fs::path(src_file).stem().string();
             std::string obj_file = platform_build_dir + base_name + ".o";
@@ -194,7 +195,7 @@ void build(std::string new_version){
                     fs::remove(obj_file);
                 }
             } catch (const std::exception& e) {
-                std::cerr << "⚠️ Failed to delete " << obj_file << ": " << e.what() << "\n";
+                if(!quiet){std::cerr << "⚠️ Failed to delete " << obj_file << ": " << e.what() << "\n";}
             }
         }
 
@@ -204,7 +205,7 @@ void build(std::string new_version){
                 fs::remove(platform_build_dir);
             }
         } catch (const std::exception& e) {
-            std::cerr << "⚠️ Failed to clean up directory: " << e.what() << "\n";
+            if(!quiet){std::cerr << "⚠️ Failed to clean up directory: " << e.what() << "\n";}
         }
     }
 }

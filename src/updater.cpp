@@ -21,11 +21,12 @@ void update(std::string final_dest) {
     if (is_windows) {
         binary_name = "jmakepp.exe";
     } else if(is_macos) {
-        binary_name = "jmakepp_macos";
+        std::cerr << "no macos binary, please build from source" << std::endl;
+        return;
     } else {
         binary_name = "jmakepp_linux";
     }
-    
+
     std::string src = dest + "/bin/" + binary_name;
 
     if (!fs::exists(src)) {
