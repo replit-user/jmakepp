@@ -110,6 +110,7 @@ void build(std::string new_version){
         if(!quiet){std::cout << "🔄 Updated version to: " << new_version << "\n";}
     } catch(std::exception) {
         if(!quiet){std::cout << "⚠️ version not updated due to an unexpected error";}
+        all_success = false;
     }
 
     for (const std::string& platform : platforms) {
@@ -144,7 +145,7 @@ void build(std::string new_version){
         if (!filio::extra::file_exists(fs::path(platform_build_dir))) {
             if(!quiet){std::cout << "❌ Build failed for platform: " << platform << " (compilation stage)\n";}
             all_success = false;
-            continue;
+            return;
         }
 
         // Link all object files together
@@ -181,6 +182,7 @@ void build(std::string new_version){
         if (link_result != 0) {
             if(!quiet){std::cout << "❌ Build failed for platform: " << platform << " (linking stage)\n";}
             all_success = false;
+            return;
         } else {
             if(!quiet){std::cout << "✅ Built for " << platform << " -> " << outname << "\n";}
         }
