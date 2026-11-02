@@ -11,8 +11,6 @@
 #include "../include/dauser/platform.hpp"
 #include "../include/dauser/cmd.hpp"
 #include <filesystem>
-
-
 namespace fs = std::filesystem;
 
 
@@ -70,7 +68,7 @@ int main(int argc, char* argv[]) {
                 if(config["override binary name"]){
                     std::string buildpath = config["buildpath"];
                     std::string binary_name = config["binary name"];
-                    run_cmd(buildpath + "" + binary_name + (is_windows?"_windows.exe":is_macos?"_macos":"_linux"));
+                    run_cmd(buildpath + "" + binary_name + (is_windows?".exe":is_macos?"-macos":"-linux"));
                 }else{
                     std::string version = config["version"];
                     std::string buildpath = config["buildpath"];

@@ -2,7 +2,7 @@
 #include <iostream>
 
 std::string get_version() {
-    return "2.1.1-bugfix";
+    return "2.2.2";
 }
 
 void show_help() {
