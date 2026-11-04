@@ -2,6 +2,7 @@
 #include "../include/dauser/config.hpp"
 #include "../include/dauser/cmd.hpp"
 #include "../include/dauser/filio.hpp"
+#include <cstddef>
 #include <iostream>
 #include <filesystem>
 #include <fstream>
@@ -75,6 +76,9 @@ void compile_all(
 void build(std::string new_version){
     json config = load_project_config();
     int max_threads = config["max threads"];
+    if(max_threads <= 0 || !max_threads){
+        std::cerr << "⚠️ max threads invalid value or missing";
+    }
     bool c = config["c"];
     std::string name = config["name"];
     std::string buildpath = config["buildpath"];

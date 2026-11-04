@@ -15,7 +15,7 @@ namespace fs = std::filesystem;
 
 
 int main(int argc, char* argv[]) {
-    if (argc < 2) {
+    if (argc < 1) {
         std::cout << "Usage: jmakepp [build|new|install|help|version|clean|update] [optional args]\n";
         return 1;
     }
@@ -24,11 +24,14 @@ int main(int argc, char* argv[]) {
 
 
         if (cmd == "build") {
-            try{
-                std::string temp = argv[2];
-                build(temp);
-            }catch(const std::exception& e){
+            try{if(argc == 2){
                 build("");
+            }else if(argc == 1 || argc > 3){
+                show_help();
+            }else{
+                build(argv[argc - 1]);
+            }}catch(std::exception err){
+                std::cerr << err.what();
             }
         }else if (cmd == "install") {
             if (argc < 3) {
@@ -49,6 +52,10 @@ int main(int argc, char* argv[]) {
             std::cout << "Version: " << get_version() << "\n";
             return 0;
         } else if (cmd == "clean") {
+            if(!std::filesystem::exists("project.json")){
+                std::cerr << "⚠️ project.json not found.";
+                return 1;
+            }
             json config = load_project_config();
             std::string buildpath = config["buildpath"];
             std::filesystem::path buildpath_fs = buildpath;
@@ -58,7 +65,7 @@ int main(int argc, char* argv[]) {
             }
 
             else {
-                std::cout << "⚠️ Build directory does not exist\n";
+                std::cerr << "⚠️ Build directory does not exist\n";
             }
         } else if (cmd == "update") {
             update(filio::extra::script_path().string());
