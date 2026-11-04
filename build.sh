@@ -1,5 +1,5 @@
 jmakepp clean
-jmakepp build "2.2.4"
+jmakepp build "2.2.6"
 mv ./bin/*.exe ./bin/jmakepp.exe
 rm -f ./installers/*.msi && rm -f ./installers/*.deb && rm -f ./installers/*.pkg.tar.zst
 ./installers/package.sh

@@ -7,7 +7,9 @@ namespace fs = std::filesystem;
 
 void install_headers(const std::string& from_path) {
     json config = load_project_config();
-    fs::create_directories(config["includepaths"]);
+    for(int i = 0; i < config["includepaths"].size();i++){
+        fs::create_directories(config["includepaths"][i]);
+    }
     fs::path source = fs::absolute(from_path);
 
     if (!fs::exists(source)) {

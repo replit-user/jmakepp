@@ -43,7 +43,7 @@ void update(std::string final_dest) {
         std::string newpath = script_path + ".old";
 
         fs::rename(script_path, newpath);
-        fs::copy_file(src, final_dest, fs::copy_options::overwrite_existing);
+        fs::copy_file(src, static_cast<fs::path>(final_dest), fs::copy_options::overwrite_existing);
         fs::remove("/usr/bin/jmakepp.old");
         fs::permissions("/usr/bin/jmakepp", fs::perms::owner_all);
 

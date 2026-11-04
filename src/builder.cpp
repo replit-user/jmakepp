@@ -76,7 +76,7 @@ void compile_all(
 void build(std::string new_version){
     json config = load_project_config();
     int max_threads = config["max threads"];
-    if(max_threads <= 0 || !max_threads){
+    if(max_threads <= 0){
         std::cerr << "⚠️ max threads invalid value or missing";
     }
     bool c = config["c"];
