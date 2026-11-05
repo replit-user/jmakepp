@@ -10,7 +10,7 @@
 #include <vector>
 #include <mutex>
 #include <sstream>
-
+#include <algorithm>
 namespace fs = std::filesystem;
 
 std::mutex compilation_mutex;
@@ -144,6 +144,22 @@ void build(std::string new_version){
 
         // Compile each source file
         if(!quiet){std::cout << "📦 Starting compilation for platform: " << platform << "\n";}
+        // check for changes since last compile, and only compile if there were changes, we do this by reading and writing a .OLD file, if it exists we check if somethings changed, if it doesn't we assume somethings changed
+        for(int i = 0; i < src_files.size();i++){
+            std::string OLD = src_files[i] + ".OLD";
+            if(!fs::exists(OLD)){
+                continue;
+            }else{
+                std::string contents = filio::read(OLD);
+                std::string current_contents = filio::read(src_files[i]);
+                if(contents == current_contents){
+                    src_files.erase(src_files.begin() + i);
+                }
+            }
+        }
+        for(int i; i < src_files.size();i++){
+            filio::write(src_files[i] + ".OLD", filio::read(src_files[i]));
+        }
         compile_all(src_files,compiler,flags,includes,platform_build_dir,max_threads);
 
         if (!filio::extra::file_exists(fs::path(platform_build_dir))) {
