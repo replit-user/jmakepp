@@ -2,7 +2,6 @@
 #include "../include/dauser/builder.hpp"
 #include "../include/dauser/filio.hpp"
 #include "../include/dauser/platform.hpp"
-#include "../include/dauser/cli.hpp"
 #include <filesystem>
 #include <iostream>
 
