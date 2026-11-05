@@ -1,3 +1,4 @@
+set -e
 jmakepp clean
 jmakepp build "2.2.6"
 mv ./bin/*.exe ./bin/jmakepp.exe
