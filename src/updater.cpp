@@ -11,12 +11,7 @@ namespace fs = std::filesystem;
 void update(std::string final_dest) {
     std::string url = "https://github.com/replit-user/jmakepp.git";
     std::string dest = "./TMP";
-    if(get_version() == "2.2.7"){
-        std::cerr << "your jmakepp is already up to date";
-        return;
-    }else{
         std::string cmd = "git clone " + url + " " + dest;
-    }
 
     if (run_cmd(cmd) != 0) {
         std::cerr << "❌ Failed to clone repository.\n";
