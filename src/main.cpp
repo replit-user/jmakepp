@@ -32,6 +32,7 @@ int main(int argc, char* argv[]) {
                 build(argv[argc - 1]);
             }}catch(std::exception err){
                 std::cerr << err.what();
+                return 1;
             }
         }else if (cmd == "install") {
             if (argc < 3) {
@@ -75,7 +76,8 @@ int main(int argc, char* argv[]) {
                 if(config["override binary name"]){
                     std::string buildpath = config["buildpath"];
                     std::string binary_name = config["binary name"];
-                    run_cmd(buildpath + "" + binary_name + (is_windows?".exe":is_macos?"-macos":"-linux"));
+                    bool override_binary_name = config["override binary name"];
+                    run_cmd(buildpath + "/" + binary_name + (is_windows?".exe":"_linux"));
                 }else{
                     std::string version = config["version"];
                     std::string buildpath = config["buildpath"];

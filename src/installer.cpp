@@ -7,9 +7,6 @@ namespace fs = std::filesystem;
 
 void install_headers(const std::string& from_path) {
     json config = load_project_config();
-    for(int i = 0; i < config["includepaths"].size();i++){
-        fs::create_directories(config["includepaths"][i]);
-    }
     fs::path source = fs::absolute(from_path);
 
     if (!fs::exists(source)) {
@@ -19,7 +16,7 @@ void install_headers(const std::string& from_path) {
 
     if (fs::is_regular_file(source)) {
         if (source.extension() == ".h" || source.extension() == ".hpp") {
-            fs::copy_file(source, fs::path("include") / source.filename(), fs::copy_options::overwrite_existing);
+            fs::copy_file(source, fs::path(config["includepaths"][0]) / source.filename(), fs::copy_options::overwrite_existing);
             std::cout << "✅ Installed header: " << source.filename() << "\n";
         } else {
             std::cout << "❌ Not a header file: " << source << "\n";
@@ -30,7 +27,7 @@ void install_headers(const std::string& from_path) {
     for (auto& entry : fs::recursive_directory_iterator(source)) {
         if (entry.is_regular_file() && (entry.path().extension() == ".h" || entry.path().extension() == ".hpp")) {
             auto rel_path = fs::relative(entry.path().parent_path(), source);
-            fs::path dest = fs::path("include") / rel_path / entry.path().filename();
+            fs::path dest = fs::path(config["includepaths"][0]) / rel_path / entry.path().filename();
             fs::create_directories(dest.parent_path());
             fs::copy_file(entry.path(), dest, fs::copy_options::overwrite_existing);
         }

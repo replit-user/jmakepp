@@ -77,6 +77,7 @@ void build(std::string new_version){
     int max_threads = config["max threads"];
     if(max_threads <= 0){
         std::cerr << "⚠️ max threads invalid value or missing";
+        return;
     }
     bool c = config["c"];
     std::string name = config["name"];
