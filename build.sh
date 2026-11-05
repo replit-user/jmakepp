@@ -1,5 +1,5 @@
 set -e
-$version=$(grep '"version"' ./project.json | sed 's/.*"version": "\([^"]*\)".*/\1/')
+version=$(grep '"version"' ./project.json | sed 's/.*"version": "\([^"]*\)".*/\1/')
 jmakepp clean
 jmakepp build $version
 mv ./bin/*.exe ./bin/jmakepp.exe
